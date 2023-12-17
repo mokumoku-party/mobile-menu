@@ -239,6 +239,7 @@ onTabForCocktail(AutoDisposeFutureProvider provider, WidgetRef ref) {
 void _showModal(BuildContext context) {
   showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           height: 587,
