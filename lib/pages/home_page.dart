@@ -97,12 +97,14 @@ class _MenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Wrap(
-        direction: Axis.horizontal,
-        alignment: WrapAlignment.center,
-        spacing: 8,
-        runSpacing: 8,
-        children: menuList.map((e) => MenuItem(e)).toList(),
+      child: Center(
+        child: Wrap(
+          direction: Axis.horizontal,
+          alignment: WrapAlignment.start,
+          spacing: 8,
+          runSpacing: 8,
+          children: menuList.map((e) => MenuItem(e)).toList(),
+        ),
       ),
     );
   }
@@ -126,31 +128,27 @@ class MenuItem extends StatelessWidget {
         width: 150,
         height: 200,
         child: Flexible(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/background.jpg'))),
-                  width: 112,
-                  height: 112,
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
-                    name,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ]),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/background.jpg'))),
+              width: 112,
+              height: 112,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                name,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+          ]),
         ),
       ),
     );
@@ -177,7 +175,14 @@ class _Sidebar extends HookConsumerWidget {
               'カクテル',
               SidebarType.cocktail,
               onTap: () {
-                ref.read(getOrderMenuProvider);
+                ref.read(getOrderMenuProvider).when(
+                    data: (e) {
+                      orderMenuList = e;
+                      print("debug");
+                      print(orderMenuList);
+                    },
+                    error: (_, __) {},
+                    loading: () {});
                 ref.read(sidebarProvider.notifier).state = SidebarType.cocktail;
               },
             ),
