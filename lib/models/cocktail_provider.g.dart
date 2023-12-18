@@ -6,7 +6,7 @@ part of 'cocktail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSelfMenuHash() => r'2e1cfbefd3b5c2000b245afea6e4cd04f60f805f';
+String _$getSelfMenuHash() => r'93291b51075865d0cde2ad7f9ebb691dc48b200f';
 
 /// See also [getSelfMenu].
 @ProviderFor(getSelfMenu)
@@ -20,7 +20,7 @@ final getSelfMenuProvider = AutoDisposeFutureProvider<List<SelfMenu>>.internal(
 );
 
 typedef GetSelfMenuRef = AutoDisposeFutureProviderRef<List<SelfMenu>>;
-String _$getOrderMenuHash() => r'3946b21e4b86f492bfd5837fd81fe44406b1e396';
+String _$getOrderMenuHash() => r'74f02fa47fff65a9661ed8e2b5432f374cae5d90';
 
 /// See also [getOrderMenu].
 @ProviderFor(getOrderMenu)

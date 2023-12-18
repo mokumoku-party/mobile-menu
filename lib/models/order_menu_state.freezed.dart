@@ -22,12 +22,14 @@ OrderMenu _$OrderMenuFromJson(Map<String, dynamic> json) {
 mixin _$OrderMenu {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get discription => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
   Method get method => throw _privateConstructorUsedError;
   Style get style => throw _privateConstructorUsedError;
-  List<String> get special => throw _privateConstructorUsedError;
-  double get alcoholeParcent => throw _privateConstructorUsedError;
+  List<String> get specials => throw _privateConstructorUsedError;
+  double get alcPercent => throw _privateConstructorUsedError;
   List<Ingredient> get ingredients => throw _privateConstructorUsedError;
+  int get stock => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,12 +45,14 @@ abstract class $OrderMenuCopyWith<$Res> {
   $Res call(
       {int id,
       String name,
-      String discription,
+      String description,
+      String imageUrl,
       Method method,
       Style style,
-      List<String> special,
-      double alcoholeParcent,
-      List<Ingredient> ingredients});
+      List<String> specials,
+      double alcPercent,
+      List<Ingredient> ingredients,
+      int stock});
 }
 
 /// @nodoc
@@ -66,12 +70,14 @@ class _$OrderMenuCopyWithImpl<$Res, $Val extends OrderMenu>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? discription = null,
+    Object? description = null,
+    Object? imageUrl = null,
     Object? method = null,
     Object? style = null,
-    Object? special = null,
-    Object? alcoholeParcent = null,
+    Object? specials = null,
+    Object? alcPercent = null,
     Object? ingredients = null,
+    Object? stock = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -82,9 +88,13 @@ class _$OrderMenuCopyWithImpl<$Res, $Val extends OrderMenu>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      discription: null == discription
-          ? _value.discription
-          : discription // ignore: cast_nullable_to_non_nullable
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       method: null == method
           ? _value.method
@@ -94,18 +104,22 @@ class _$OrderMenuCopyWithImpl<$Res, $Val extends OrderMenu>
           ? _value.style
           : style // ignore: cast_nullable_to_non_nullable
               as Style,
-      special: null == special
-          ? _value.special
-          : special // ignore: cast_nullable_to_non_nullable
+      specials: null == specials
+          ? _value.specials
+          : specials // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      alcoholeParcent: null == alcoholeParcent
-          ? _value.alcoholeParcent
-          : alcoholeParcent // ignore: cast_nullable_to_non_nullable
+      alcPercent: null == alcPercent
+          ? _value.alcPercent
+          : alcPercent // ignore: cast_nullable_to_non_nullable
               as double,
       ingredients: null == ingredients
           ? _value.ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<Ingredient>,
+      stock: null == stock
+          ? _value.stock
+          : stock // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -121,12 +135,14 @@ abstract class _$$OrderMenuImplCopyWith<$Res>
   $Res call(
       {int id,
       String name,
-      String discription,
+      String description,
+      String imageUrl,
       Method method,
       Style style,
-      List<String> special,
-      double alcoholeParcent,
-      List<Ingredient> ingredients});
+      List<String> specials,
+      double alcPercent,
+      List<Ingredient> ingredients,
+      int stock});
 }
 
 /// @nodoc
@@ -142,12 +158,14 @@ class __$$OrderMenuImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? discription = null,
+    Object? description = null,
+    Object? imageUrl = null,
     Object? method = null,
     Object? style = null,
-    Object? special = null,
-    Object? alcoholeParcent = null,
+    Object? specials = null,
+    Object? alcPercent = null,
     Object? ingredients = null,
+    Object? stock = null,
   }) {
     return _then(_$OrderMenuImpl(
       id: null == id
@@ -158,9 +176,13 @@ class __$$OrderMenuImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      discription: null == discription
-          ? _value.discription
-          : discription // ignore: cast_nullable_to_non_nullable
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       method: null == method
           ? _value.method
@@ -170,35 +192,42 @@ class __$$OrderMenuImplCopyWithImpl<$Res>
           ? _value.style
           : style // ignore: cast_nullable_to_non_nullable
               as Style,
-      special: null == special
-          ? _value._special
-          : special // ignore: cast_nullable_to_non_nullable
+      specials: null == specials
+          ? _value._specials
+          : specials // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      alcoholeParcent: null == alcoholeParcent
-          ? _value.alcoholeParcent
-          : alcoholeParcent // ignore: cast_nullable_to_non_nullable
+      alcPercent: null == alcPercent
+          ? _value.alcPercent
+          : alcPercent // ignore: cast_nullable_to_non_nullable
               as double,
       ingredients: null == ingredients
           ? _value._ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<Ingredient>,
+      stock: null == stock
+          ? _value.stock
+          : stock // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
   const _$OrderMenuImpl(
       {required this.id,
       required this.name,
-      required this.discription,
+      required this.description,
+      required this.imageUrl,
       required this.method,
       required this.style,
-      required final List<String> special,
-      required this.alcoholeParcent,
-      required final List<Ingredient> ingredients})
-      : _special = special,
+      required final List<String> specials,
+      required this.alcPercent,
+      required final List<Ingredient> ingredients,
+      required this.stock})
+      : _specials = specials,
         _ingredients = ingredients;
 
   factory _$OrderMenuImpl.fromJson(Map<String, dynamic> json) =>
@@ -209,21 +238,23 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
   @override
   final String name;
   @override
-  final String discription;
+  final String description;
+  @override
+  final String imageUrl;
   @override
   final Method method;
   @override
   final Style style;
-  final List<String> _special;
+  final List<String> _specials;
   @override
-  List<String> get special {
-    if (_special is EqualUnmodifiableListView) return _special;
+  List<String> get specials {
+    if (_specials is EqualUnmodifiableListView) return _specials;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_special);
+    return EqualUnmodifiableListView(_specials);
   }
 
   @override
-  final double alcoholeParcent;
+  final double alcPercent;
   final List<Ingredient> _ingredients;
   @override
   List<Ingredient> get ingredients {
@@ -233,8 +264,11 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
   }
 
   @override
+  final int stock;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderMenu(id: $id, name: $name, discription: $discription, method: $method, style: $style, special: $special, alcoholeParcent: $alcoholeParcent, ingredients: $ingredients)';
+    return 'OrderMenu(id: $id, name: $name, description: $description, imageUrl: $imageUrl, method: $method, style: $style, specials: $specials, alcPercent: $alcPercent, ingredients: $ingredients, stock: $stock)';
   }
 
   @override
@@ -244,12 +278,14 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
       ..add(DiagnosticsProperty('type', 'OrderMenu'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('discription', discription))
+      ..add(DiagnosticsProperty('description', description))
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
       ..add(DiagnosticsProperty('method', method))
       ..add(DiagnosticsProperty('style', style))
-      ..add(DiagnosticsProperty('special', special))
-      ..add(DiagnosticsProperty('alcoholeParcent', alcoholeParcent))
-      ..add(DiagnosticsProperty('ingredients', ingredients));
+      ..add(DiagnosticsProperty('specials', specials))
+      ..add(DiagnosticsProperty('alcPercent', alcPercent))
+      ..add(DiagnosticsProperty('ingredients', ingredients))
+      ..add(DiagnosticsProperty('stock', stock));
   }
 
   @override
@@ -259,15 +295,18 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
             other is _$OrderMenuImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.discription, discription) ||
-                other.discription == discription) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.method, method) || other.method == method) &&
             (identical(other.style, style) || other.style == style) &&
-            const DeepCollectionEquality().equals(other._special, _special) &&
-            (identical(other.alcoholeParcent, alcoholeParcent) ||
-                other.alcoholeParcent == alcoholeParcent) &&
+            const DeepCollectionEquality().equals(other._specials, _specials) &&
+            (identical(other.alcPercent, alcPercent) ||
+                other.alcPercent == alcPercent) &&
             const DeepCollectionEquality()
-                .equals(other._ingredients, _ingredients));
+                .equals(other._ingredients, _ingredients) &&
+            (identical(other.stock, stock) || other.stock == stock));
   }
 
   @JsonKey(ignore: true)
@@ -276,12 +315,14 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
       runtimeType,
       id,
       name,
-      discription,
+      description,
+      imageUrl,
       method,
       style,
-      const DeepCollectionEquality().hash(_special),
-      alcoholeParcent,
-      const DeepCollectionEquality().hash(_ingredients));
+      const DeepCollectionEquality().hash(_specials),
+      alcPercent,
+      const DeepCollectionEquality().hash(_ingredients),
+      stock);
 
   @JsonKey(ignore: true)
   @override
@@ -301,12 +342,14 @@ abstract class _OrderMenu implements OrderMenu {
   const factory _OrderMenu(
       {required final int id,
       required final String name,
-      required final String discription,
+      required final String description,
+      required final String imageUrl,
       required final Method method,
       required final Style style,
-      required final List<String> special,
-      required final double alcoholeParcent,
-      required final List<Ingredient> ingredients}) = _$OrderMenuImpl;
+      required final List<String> specials,
+      required final double alcPercent,
+      required final List<Ingredient> ingredients,
+      required final int stock}) = _$OrderMenuImpl;
 
   factory _OrderMenu.fromJson(Map<String, dynamic> json) =
       _$OrderMenuImpl.fromJson;
@@ -316,17 +359,21 @@ abstract class _OrderMenu implements OrderMenu {
   @override
   String get name;
   @override
-  String get discription;
+  String get description;
+  @override
+  String get imageUrl;
   @override
   Method get method;
   @override
   Style get style;
   @override
-  List<String> get special;
+  List<String> get specials;
   @override
-  double get alcoholeParcent;
+  double get alcPercent;
   @override
   List<Ingredient> get ingredients;
+  @override
+  int get stock;
   @override
   @JsonKey(ignore: true)
   _$$OrderMenuImplCopyWith<_$OrderMenuImpl> get copyWith =>

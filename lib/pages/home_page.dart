@@ -1,9 +1,11 @@
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
+import 'package:app/models/self_menu_state.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 List<OrderMenu> orderMenuList = List.empty();
+List<SelfMenu> selfMenuList = List.empty();
 
 final sidebarProvider = StateProvider((ref) => SidebarType.cocktail);
 
@@ -22,8 +24,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state_2 = ref.watch(getSelfMenuProvider);
-    // state_2.when(data: (data) {print(data);}, error: (object,trace) {print("stack trace"); print(object);print(trace);}, loading: () {});
     return Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -76,21 +76,48 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _MainContent extends StatelessWidget {
+class _MainContent extends HookConsumerWidget {
   const _MainContent({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [_Sidebar(), Expanded(child: _MenuList())],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final type = ref.watch(sidebarProvider);
+    Widget widget = switch (type) {
+      SidebarType.cocktail => const _OrderMenuList(),
+      SidebarType.otherDrink => const _SelfMenuList(),
+      SidebarType.other => const _OrderMenuList()
+    };
+    return Row(
+      children: [const _Sidebar(), Expanded(child: widget)],
     );
   }
 }
 
-class _MenuList extends StatelessWidget {
-  const _MenuList({
+class _OrderMenuList extends HookConsumerWidget {
+  const _OrderMenuList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Wrap(
+          direction: Axis.horizontal,
+          alignment: WrapAlignment.start,
+          spacing: 8,
+          runSpacing: 8,
+          children: menuList.map((e) => MenuItem(e)).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _SelfMenuList extends StatelessWidget {
+  const _SelfMenuList({
     super.key,
   });
 
@@ -103,7 +130,7 @@ class _MenuList extends StatelessWidget {
           alignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
-          children: menuList.map((e) => MenuItem(e)).toList(),
+          children: selfMenuList.map((e) => MenuItem(e.name)).toList(),
         ),
       ),
     );
@@ -125,31 +152,32 @@ class MenuItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           color: const Color(0x47796D8E),
         ),
-        width: 150,
-        height: 200,
-        child: Flexible(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
+        width: 137,
+        height: 159,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            padding: const EdgeInsets.only(top: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: const DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage('assets/background.jpg'))),
               width: 112,
               height: 112,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(
-                name,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700),
-              ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              name,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -165,7 +193,7 @@ class _Sidebar extends HookConsumerWidget {
     return Container(
       width: 39,
       decoration: const BoxDecoration(
-          color: Color(0xFF252D42),
+          color: Color.fromARGB(176, 37, 45, 66),
           borderRadius: BorderRadius.only(topRight: Radius.circular(24))),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
@@ -174,23 +202,17 @@ class _Sidebar extends HookConsumerWidget {
             SidebarButton(
               'カクテル',
               SidebarType.cocktail,
-              onTap: () {
-                ref.read(getOrderMenuProvider).when(
-                    data: (e) {
-                      orderMenuList = e;
-                      print("debug");
-                      print(orderMenuList);
-                    },
-                    error: (_, __) {},
-                    loading: () {});
+              onTap: () async {
+                orderMenuList = await ref.read(getOrderMenuProvider.future);
+                print(orderMenuList);
                 ref.read(sidebarProvider.notifier).state = SidebarType.cocktail;
               },
             ),
             SidebarButton(
               "その他のドリンク",
               SidebarType.otherDrink,
-              onTap: () {
-                // ref.read(getOrderMenuProvider);
+              onTap: () async {
+                selfMenuList = await ref.read(getSelfMenuProvider.future);
                 ref.read(sidebarProvider.notifier).state =
                     SidebarType.otherDrink;
               },
@@ -246,36 +268,46 @@ void _showModal(BuildContext context) {
         return Container(
           height: 587,
           width: 375,
-          color: Colors.black,
+          color: Colors.red,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/background.jpg'))),
-                width: 200,
-                height: 200,
+                padding: const EdgeInsets.only(top: 48),
+                child: Container(
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/background.jpg'))),
+                  width: 200,
+                  height: 200,
+                ),
               ),
-              const Text(
-                "ジントニック",
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
+              Container(
+                padding: const EdgeInsets.only(top: 23),
+                child: const Text(
+                  "ジントニック",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
               ),
-              const Text(
-                "● Alc. 8%\n● ジン、トニックウォーター、ライム",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white),
+              Container(
+                padding: const EdgeInsets.only(top: 23),
+                child: const Text(
+                  "● Alc. 8%\n● ジン、トニックウォーター、ライム",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                ),
               ),
-              const SizedBox(
+              Container(
+                padding: const EdgeInsets.only(top: 23),
                 width: 247,
-                child: Text(
+                child: const Text(
                   "ドライジンとトニックウォーターをステアし、ライムかレモンを添えたロングカクテルです。",
                   style: TextStyle(
                       fontSize: 14,
@@ -283,11 +315,15 @@ void _showModal(BuildContext context) {
                       color: Colors.white),
                 ),
               ),
-              SizedBox(
-                  height: 48,
+              Container(
+                padding: const EdgeInsets.only(top: 28),
+                child: SizedBox(
                   width: 247,
+                  height: 48,
                   child:
-                      FilledButton(onPressed: () {}, child: const Text("注文する")))
+                      FilledButton(onPressed: () {}, child: const Text("注文する")),
+                ),
+              )
             ],
           ),
         );
