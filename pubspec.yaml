@@ -18,6 +18,7 @@ dependencies:
   hooks_riverpod: ^2.0.2
   http: ^1.1.2
   json_annotation: ^4.8.1
+  rainbow_color: ^2.0.1
   riverpod_annotation: ^2.3.3
 
 dev_dependencies:

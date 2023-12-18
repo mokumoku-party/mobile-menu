@@ -2,7 +2,9 @@ import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/self_menu_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rainbow_color/rainbow_color.dart';
 
 List<OrderMenu> orderMenuList = List.empty();
 List<SelfMenu> selfMenuList = List.empty();
@@ -19,18 +21,37 @@ List<String> menuList = [
   "テキーラサンライズ"
 ];
 
+const colors = [
+  Color.fromARGB(190, 5, 46, 70),
+  Color(0xbf2b759f),
+  Color(0xD963CEDE),
+  Color(0xFFe5ae4b),
+  Color(0xFFF6A988),
+];
+
+final rb = Rainbow(
+  spectrum: colors,
+);
+
+final scrollProvider = StateProvider((ref) => 0.0);
+
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final state_2 = ref.watch(getSelfMenuProvider);
+    // state_2.when(data: (data) {print(data);}, error: (object,trace) {print("stack trace"); print(object);print(trace);}, loading: () {});
+
+    final scrollAmount = ref.watch(scrollProvider);
+
     return Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage('assets/background.jpg')),
-        ),
-        child:
-            const Scaffold(backgroundColor: Colors.transparent, body: _Body()));
+      color: rb[1 - scrollAmount],
+      child: const Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _Body(),
+      ),
+    );
   }
 }
 
@@ -62,10 +83,11 @@ class _Body extends StatelessWidget {
             child: const Text(
               "var foo = Bar",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: "Inter"),
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Inter",
+              ),
             ),
           ),
         ]),
@@ -116,14 +138,28 @@ class _OrderMenuList extends HookConsumerWidget {
   }
 }
 
-class _SelfMenuList extends StatelessWidget {
+class _SelfMenuList extends HookConsumerWidget {
   const _SelfMenuList({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useScrollController();
+
+    useEffect(() {
+      listener() {
+        final amount = controller.offset / controller.position.maxScrollExtent;
+        ref.read(scrollProvider.notifier).state = amount;
+      }
+
+      controller.addListener(listener);
+
+      return () => controller.removeListener(listener);
+    }, const []);
+
     return SingleChildScrollView(
+      controller: controller,
       child: Center(
         child: Wrap(
           direction: Axis.horizontal,
@@ -150,7 +186,7 @@ class MenuItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: const Color(0x47796D8E),
+          color: Colors.white.withOpacity(.2),
         ),
         width: 137,
         height: 159,
