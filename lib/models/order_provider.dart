@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'order_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<String> cocktailOrder(CocktailOrderRef ref, int menuId) async {
   var res = await http.post(
       Uri.parse("https://cocktailorder-1-l6047017.deta.app/order/$menuId"));

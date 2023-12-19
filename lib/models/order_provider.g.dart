@@ -6,7 +6,7 @@ part of 'order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cocktailOrderHash() => r'9c22a473ce4de958d4ade91194fdddb4bb7fe671';
+String _$cocktailOrderHash() => r'f149defaf09b0c37241fe66cc2d0c6da17908bee';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class CocktailOrderFamily extends Family<AsyncValue<String>> {
 }
 
 /// See also [cocktailOrder].
-class CocktailOrderProvider extends FutureProvider<String> {
+class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
   /// See also [cocktailOrder].
   CocktailOrderProvider(
     int menuId,
@@ -124,7 +124,7 @@ class CocktailOrderProvider extends FutureProvider<String> {
   }
 
   @override
-  FutureProviderElement<String> createElement() {
+  AutoDisposeFutureProviderElement<String> createElement() {
     return _CocktailOrderProviderElement(this);
   }
 
@@ -142,13 +142,13 @@ class CocktailOrderProvider extends FutureProvider<String> {
   }
 }
 
-mixin CocktailOrderRef on FutureProviderRef<String> {
+mixin CocktailOrderRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `menuId` of this provider.
   int get menuId;
 }
 
-class _CocktailOrderProviderElement extends FutureProviderElement<String>
-    with CocktailOrderRef {
+class _CocktailOrderProviderElement
+    extends AutoDisposeFutureProviderElement<String> with CocktailOrderRef {
   _CocktailOrderProviderElement(super.provider);
 
   @override

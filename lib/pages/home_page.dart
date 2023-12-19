@@ -186,15 +186,17 @@ class _SelfMenuList extends HookConsumerWidget {
   }
 }
 
-class OrderMenuItem extends StatelessWidget {
+class OrderMenuItem extends HookConsumerWidget {
   final OrderMenu orderMenu;
   final String name;
   const OrderMenuItem(this.name, this.orderMenu, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        ref.read(orderButtonProvider.notifier).state = OrderButtonType.before;
+
         _showModal(context, orderMenu);
       },
       child: MenuItem(name),
@@ -338,6 +340,25 @@ class OrderMenuDetailModal extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final res = ref.watch(getOneOrderMenuProvider(id));
+    Widget buttonText = switch (ref.watch(orderButtonProvider)) {
+      OrderButtonType.before => const Text(
+          "注文する",
+          style: TextStyle(
+            color: Color(0xFF515151),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+      OrderButtonType.processing => const CircularProgressIndicator(),
+      OrderButtonType.done => const Text(
+          "注文完了",
+          style: TextStyle(
+            color: Color(0xFF515151),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        )
+    };
     return DraggableScrollableSheet(
       initialChildSize: 1.0,
       builder: (BuildContext context, ScrollController scrollController) {
@@ -410,39 +431,22 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                         child: FilledButton(
                             onPressed: ref.watch(orderButtonProvider) ==
                                     OrderButtonType.before
-                                ? () {
-                                    final res =
-                                        ref.watch(CocktailOrderProvider(id));
-                                    res.when(
-                                        data: (data) {
-                                          ref
-                                              .watch(orderNumProvider.notifier)
-                                              .state = data;
-                                          ref
-                                              .watch(
-                                                  orderButtonProvider.notifier)
-                                              .state = OrderButtonType.done;
-                                        },
-                                        error: (_, __) {},
-                                        loading: () {
-                                          ref
-                                                  .read(orderButtonProvider
-                                                      .notifier)
-                                                  .state =
-                                              OrderButtonType.processing;
-                                        });
+                                ? () async {
+                                    ref
+                                        .read(orderButtonProvider.notifier)
+                                        .state = OrderButtonType.processing;
+                                    final res = await ref
+                                        .read(cocktailOrderProvider(id).future);
+                                    ref.read(orderNumProvider.notifier).state =
+                                        res;
+                                    ref
+                                        .read(orderButtonProvider.notifier)
+                                        .state = OrderButtonType.done;
                                   }
                                 : null,
                             style: FilledButton.styleFrom(
                                 backgroundColor: Colors.white),
-                            child: const Text(
-                              "注文する",
-                              style: TextStyle(
-                                color: Color(0xFF515151),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 20,
-                              ),
-                            )),
+                            child: buttonText),
                       ),
                     ),
                   ),
