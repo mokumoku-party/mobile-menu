@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:async';
+
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
@@ -45,6 +47,25 @@ class HomePage extends HookConsumerWidget {
     // state_2.when(data: (data) {print(data);}, error: (object,trace) {print("stack trace"); print(object);print(trace);}, loading: () {});
 
     final scrollAmount = ref.watch(scrollProvider);
+
+    // TODO: ここにポーリング処理をかく
+    final id = ref.watch();
+
+    useEffect(() {
+      final timer = Timer.periodic(Duration(seconds: 10), (timer) async {
+        final res = await ref.read(hogeProvider(id).future);
+
+        if (res.isComplete) {
+          timer.cancel();
+
+          await showDialog(context: context, builder: (context) => Container());
+        }
+      });
+
+      return () {
+        timer.cancel();
+      };
+    }, [id]);
 
     return Container(
       color: rb[1 - scrollAmount],
