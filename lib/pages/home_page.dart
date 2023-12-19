@@ -322,12 +322,17 @@ class SidebarButton extends HookConsumerWidget {
 }
 
 void _showModal(BuildContext context, OrderMenu orderMenu) {
+  final height = MediaQuery.of(context).size.height * .9;
+
   showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: const Color(0xFF182634),
-      builder: (BuildContext context) {
-        return OrderMenuDetailModal(orderMenu.id);
-      });
+    context: context,
+    isScrollControlled: true,
+    constraints: BoxConstraints(maxHeight: height, maxWidth: 640),
+    backgroundColor: const Color(0xFF182634),
+    builder: (BuildContext context) {
+      return OrderMenuDetailModal(orderMenu.id);
+    },
+  );
 }
 
 class OrderMenuDetailModal extends HookConsumerWidget {
@@ -370,6 +375,7 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                   Positioned.fill(
                     child: ListView(
                       controller: scrollController,
+                      padding: EdgeInsets.symmetric(horizontal: 28),
                       children: [
                         Container(
                           padding: const EdgeInsets.only(top: 48),
