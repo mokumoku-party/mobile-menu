@@ -9,7 +9,7 @@ part 'order_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<String> cocktailOrder(CocktailOrderRef ref, int menuId) async {
   var res = await http.post(
-      Uri.parse("https://cocktailorder-1-l6047017.deta.app/order$menuId"));
+      Uri.parse("https://cocktailorder-1-l6047017.deta.app/order/$menuId"));
   if (res.statusCode == 422) {
     throw Exception(); //ここにエラー用のモデルを入れる
   }

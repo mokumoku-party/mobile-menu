@@ -34,7 +34,7 @@ final getOrderMenuProvider = FutureProvider<List<OrderMenu>>.internal(
 );
 
 typedef GetOrderMenuRef = FutureProviderRef<List<OrderMenu>>;
-String _$getOneOrderMenuHash() => r'cacdf8f4fbed39bfc0c117308133d6f51f9b78a8';
+String _$getOneOrderMenuHash() => r'ead4ad6ca74e2de073b92975b31fad20a1eb73cc';
 
 /// Copied from Dart SDK
 class _SystemHash {

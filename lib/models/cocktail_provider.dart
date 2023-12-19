@@ -33,7 +33,7 @@ Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
 Future<OrderMenu> getOneOrderMenu(GetOneOrderMenuRef ref, int menuId) async {
   var res = await http.get(Uri.parse(
       "https://cocktailorder-1-l6047017.deta.app/order_menu/$menuId"));
-  var decodedRes = jsonDecode(res.body);
+  var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   return Future.value(OrderMenu.fromJson(decodedRes));
 }
 

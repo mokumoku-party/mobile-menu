@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
+import 'package:app/models/order_provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rainbow_color/rainbow_color.dart';
 
 final sidebarProvider = StateProvider((ref) => SidebarType.cocktail);
+final orderButtonProvider = StateProvider((ref) => OrderButtonType.before);
+final orderNumProvider = StateProvider<String?>((ref) => null);
 
 List<String> menuList = [
   "hoge",
@@ -320,79 +324,129 @@ void _showModal(BuildContext context, OrderMenu orderMenu) {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return Container(
-          height: 587,
-          width: 375,
-          color: const Color(0xFF182634),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 48),
-                child: Container(
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/background.jpg'))),
-                  width: 200,
-                  height: 200,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 23),
-                child: Text(
-                  orderMenu.name,
-                  style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 24),
-                child: Text(
-                  "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 24),
-                width: 247,
-                child: Text(
-                  orderMenu.description,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 28),
-                child: SizedBox(
-                  width: 247,
-                  height: 48,
-                  child: FilledButton(
-                      onPressed: () {},
-                      style:
-                          FilledButton.styleFrom(backgroundColor: Colors.white),
-                      child: const Text(
-                        "注文する",
-                        style: TextStyle(
-                          color: Color(0xFF515151),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                        ),
-                      )),
-                ),
-              )
-            ],
-          ),
-        );
+        return OrderMenuDetailModal(orderMenu.id);
       });
 }
 
+class OrderMenuDetailModal extends HookConsumerWidget {
+  final int id;
+  const OrderMenuDetailModal(
+    this.id, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final res = ref.watch(getOneOrderMenuProvider(id));
+    return Container(
+      width: 375,
+      color: const Color(0xFF182634),
+      child: res.when(
+        data: (orderMenu) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 48),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/background.jpg'))),
+                    width: 200,
+                    height: 200,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 23),
+                  child: Text(
+                    orderMenu.name,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Text(
+                    "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: SizedBox(
+                    width: 247,
+                    child: AutoSizeText(
+                      orderMenu.description,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 28),
+                  child: SizedBox(
+                    width: 247,
+                    height: 48,
+                    child: FilledButton(
+                        onPressed: ref.watch(orderButtonProvider) ==
+                                OrderButtonType.before
+                            ? () {
+                                final res =
+                                    ref.watch(CocktailOrderProvider(id));
+                                res.when(
+                                    data: (data) {
+                                      ref
+                                          .watch(orderNumProvider.notifier)
+                                          .state = data;
+                                      ref
+                                          .watch(orderButtonProvider.notifier)
+                                          .state = OrderButtonType.done;
+                                    },
+                                    error: (_, __) {},
+                                    loading: () {
+                                      ref
+                                          .read(orderButtonProvider.notifier)
+                                          .state = OrderButtonType.processing;
+                                    });
+                              }
+                            : null,
+                        style: FilledButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child: const Text(
+                          "注文する",
+                          style: TextStyle(
+                            color: Color(0xFF515151),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                          ),
+                        )),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+        error: (_, __) {
+          return Container();
+        },
+        loading: () {
+          return SizedBox.shrink();
+        },
+      ),
+    );
+  }
+}
+
 enum SidebarType { cocktail, otherDrink, other }
+
+enum OrderButtonType { before, processing, done }
