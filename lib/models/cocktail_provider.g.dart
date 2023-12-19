@@ -6,11 +6,11 @@ part of 'cocktail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSelfMenuHash() => r'93291b51075865d0cde2ad7f9ebb691dc48b200f';
+String _$getSelfMenuHash() => r'1268730b82a57a25055a5ac08a30cc989fa28162';
 
 /// See also [getSelfMenu].
 @ProviderFor(getSelfMenu)
-final getSelfMenuProvider = AutoDisposeFutureProvider<List<SelfMenu>>.internal(
+final getSelfMenuProvider = FutureProvider<List<SelfMenu>>.internal(
   getSelfMenu,
   name: r'getSelfMenuProvider',
   debugGetCreateSourceHash:
@@ -19,13 +19,12 @@ final getSelfMenuProvider = AutoDisposeFutureProvider<List<SelfMenu>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetSelfMenuRef = AutoDisposeFutureProviderRef<List<SelfMenu>>;
-String _$getOrderMenuHash() => r'74f02fa47fff65a9661ed8e2b5432f374cae5d90';
+typedef GetSelfMenuRef = FutureProviderRef<List<SelfMenu>>;
+String _$getOrderMenuHash() => r'6d193b11424fbf8dcd33f877dc4288b394822b03';
 
 /// See also [getOrderMenu].
 @ProviderFor(getOrderMenu)
-final getOrderMenuProvider =
-    AutoDisposeFutureProvider<List<OrderMenu>>.internal(
+final getOrderMenuProvider = FutureProvider<List<OrderMenu>>.internal(
   getOrderMenu,
   name: r'getOrderMenuProvider',
   debugGetCreateSourceHash:
@@ -34,7 +33,7 @@ final getOrderMenuProvider =
   allTransitiveDependencies: null,
 );
 
-typedef GetOrderMenuRef = AutoDisposeFutureProviderRef<List<OrderMenu>>;
+typedef GetOrderMenuRef = FutureProviderRef<List<OrderMenu>>;
 String _$getOneOrderMenuHash() => r'cacdf8f4fbed39bfc0c117308133d6f51f9b78a8';
 
 /// Copied from Dart SDK

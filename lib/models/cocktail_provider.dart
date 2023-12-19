@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cocktail_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
   var res = await http
       .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/self_menu"));
@@ -19,7 +19,7 @@ Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
   // return Future.value([SelfMenu( id: 0, name: "", alcPercent: 0)]);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
   var res = await http
       .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_menu"));
