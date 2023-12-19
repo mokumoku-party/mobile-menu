@@ -131,7 +131,7 @@ class _OrderMenuList extends HookConsumerWidget {
           alignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
-          children: menuList.map((e) => MenuItem(e)).toList(),
+          children: orderMenuList.map((e) => OrderMenuItem(e.name, e)).toList(),
         ),
       ),
     );
@@ -173,48 +173,61 @@ class _SelfMenuList extends HookConsumerWidget {
   }
 }
 
-class MenuItem extends StatelessWidget {
+class OrderMenuItem extends StatelessWidget {
+  final OrderMenu orderMenu;
   final String name;
-  const MenuItem(this.name, {super.key});
+  const OrderMenuItem(this.name, this.orderMenu, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showModal(context);
+        _showModal(context, orderMenu);
       },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white.withOpacity(.2),
-        ),
-        width: 137,
-        height: 159,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-            padding: const EdgeInsets.only(top: 12),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/background.jpg'))),
-              width: 112,
-              height: 112,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              name,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ]),
+      child: MenuItem(name),
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  const MenuItem(
+    this.name, {
+    super.key,
+  });
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white.withOpacity(.2),
       ),
+      width: 137,
+      height: 159,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          padding: const EdgeInsets.only(top: 12),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/background.jpg'))),
+            width: 112,
+            height: 112,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            name,
+            style: const TextStyle(
+                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ]),
     );
   }
 }
@@ -296,7 +309,7 @@ class SidebarButton extends HookConsumerWidget {
   }
 }
 
-void _showModal(BuildContext context) {
+void _showModal(BuildContext context, OrderMenu orderMenu) {
   showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -304,7 +317,7 @@ void _showModal(BuildContext context) {
         return Container(
           height: 587,
           width: 375,
-          color: Colors.red,
+          color: const Color(0xFF182634),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -322,16 +335,16 @@ void _showModal(BuildContext context) {
               ),
               Container(
                 padding: const EdgeInsets.only(top: 23),
-                child: const Text(
-                  "ジントニック",
-                  style: TextStyle(
+                child: Text(
+                  orderMenu.name,
+                  style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                       color: Colors.white),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 23),
+                padding: const EdgeInsets.only(top: 24),
                 child: const Text(
                   "● Alc. 8%\n● ジン、トニックウォーター、ライム",
                   style: TextStyle(
@@ -341,7 +354,7 @@ void _showModal(BuildContext context) {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 23),
+                padding: const EdgeInsets.only(top: 24),
                 width: 247,
                 child: const Text(
                   "ドライジンとトニックウォーターをステアし、ライムかレモンを添えたロングカクテルです。",
@@ -356,8 +369,18 @@ void _showModal(BuildContext context) {
                 child: SizedBox(
                   width: 247,
                   height: 48,
-                  child:
-                      FilledButton(onPressed: () {}, child: const Text("注文する")),
+                  child: FilledButton(
+                      onPressed: () {},
+                      style:
+                          FilledButton.styleFrom(backgroundColor: Colors.white),
+                      child: const Text(
+                        "注文する",
+                        style: TextStyle(
+                          color: Color(0xFF515151),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                        ),
+                      )),
                 ),
               )
             ],
