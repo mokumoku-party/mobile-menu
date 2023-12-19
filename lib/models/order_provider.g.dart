@@ -6,7 +6,7 @@ part of 'order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cocktailOrderHash() => r'c096289b6e6396225f1834ecbeb71959673a1cf9';
+String _$cocktailOrderHash() => r'2a4d482a93fac1f38eefd9955bde5e6c68382a23';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class CocktailOrderFamily extends Family<AsyncValue<String>> {
 }
 
 /// See also [cocktailOrder].
-class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
+class CocktailOrderProvider extends FutureProvider<String> {
   /// See also [cocktailOrder].
   CocktailOrderProvider(
     int menuId,
@@ -124,7 +124,7 @@ class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<String> createElement() {
+  FutureProviderElement<String> createElement() {
     return _CocktailOrderProviderElement(this);
   }
 
@@ -142,24 +142,24 @@ class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
-mixin CocktailOrderRef on AutoDisposeFutureProviderRef<String> {
+mixin CocktailOrderRef on FutureProviderRef<String> {
   /// The parameter `menuId` of this provider.
   int get menuId;
 }
 
-class _CocktailOrderProviderElement
-    extends AutoDisposeFutureProviderElement<String> with CocktailOrderRef {
+class _CocktailOrderProviderElement extends FutureProviderElement<String>
+    with CocktailOrderRef {
   _CocktailOrderProviderElement(super.provider);
 
   @override
   int get menuId => (origin as CocktailOrderProvider).menuId;
 }
 
-String _$getOrderListHash() => r'9141769d6df9d081ef19ea460da04dbb09ea8e69';
+String _$getOrderListHash() => r'f3a50bbd07c05f3d354d7fa4210679dbdb8c50bd';
 
 /// See also [getOrderList].
 @ProviderFor(getOrderList)
-final getOrderListProvider = AutoDisposeFutureProvider<List<Order>>.internal(
+final getOrderListProvider = FutureProvider<List<Order>>.internal(
   getOrderList,
   name: r'getOrderListProvider',
   debugGetCreateSourceHash:
@@ -168,7 +168,7 @@ final getOrderListProvider = AutoDisposeFutureProvider<List<Order>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetOrderListRef = AutoDisposeFutureProviderRef<List<Order>>;
+typedef GetOrderListRef = FutureProviderRef<List<Order>>;
 String _$notifyCompleteCocktailHash() =>
     r'78611951e6105b6925ceb00d2d6fe577802c6e24';
 
