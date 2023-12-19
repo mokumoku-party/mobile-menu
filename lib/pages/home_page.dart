@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/self_menu_state.dart';
