@@ -322,7 +322,7 @@ class SidebarButton extends HookConsumerWidget {
 void _showModal(BuildContext context, OrderMenu orderMenu) {
   showModalBottomSheet<void>(
       context: context,
-      isScrollControlled: true,
+      backgroundColor: const Color(0xFF182634),
       builder: (BuildContext context) {
         return OrderMenuDetailModal(orderMenu.id);
       });
@@ -338,111 +338,114 @@ class OrderMenuDetailModal extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final res = ref.watch(getOneOrderMenuProvider(id));
-    return Container(
-      width: 375,
-      color: const Color(0xFF182634),
-      child: res.when(
-        data: (orderMenu) {
-          return Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 48),
-                  child: Container(
-                    decoration: const BoxDecoration(
+    return DraggableScrollableSheet(
+      initialChildSize: 1.0,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          child: res.when(
+            data: (orderMenu) {
+              return ListView(
+                controller: scrollController,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 48),
+                    child: Container(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/background.jpg'))),
-                    width: 200,
-                    height: 200,
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/background.jpg'),
+                        ),
+                        color: Colors.blue,
+                      ),
+                      width: 200,
+                      height: 200,
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 23),
-                  child: Text(
-                    orderMenu.name,
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white),
+                  Container(
+                    padding: const EdgeInsets.only(top: 23),
+                    child: Text(
+                      orderMenu.name,
+                      style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: Text(
-                    "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: SizedBox(
-                    width: 247,
-                    child: AutoSizeText(
-                      orderMenu.description,
+                  Container(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: Text(
+                      "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           color: Colors.white),
                     ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 28),
-                  child: SizedBox(
-                    width: 247,
-                    height: 48,
-                    child: FilledButton(
-                        onPressed: ref.watch(orderButtonProvider) ==
-                                OrderButtonType.before
-                            ? () {
-                                final res =
-                                    ref.watch(CocktailOrderProvider(id));
-                                res.when(
-                                    data: (data) {
-                                      ref
-                                          .watch(orderNumProvider.notifier)
-                                          .state = data;
-                                      ref
-                                          .watch(orderButtonProvider.notifier)
-                                          .state = OrderButtonType.done;
-                                    },
-                                    error: (_, __) {},
-                                    loading: () {
-                                      ref
-                                          .read(orderButtonProvider.notifier)
-                                          .state = OrderButtonType.processing;
-                                    });
-                              }
-                            : null,
-                        style: FilledButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        child: const Text(
-                          "注文する",
-                          style: TextStyle(
-                            color: Color(0xFF515151),
+                  Container(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: SizedBox(
+                      width: 247,
+                      child: AutoSizeText(
+                        orderMenu.description,
+                        style: TextStyle(
+                            fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            fontSize: 20,
-                          ),
-                        )),
+                            color: Colors.white),
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-          );
-        },
-        error: (_, __) {
-          return Container();
-        },
-        loading: () {
-          return SizedBox.shrink();
-        },
-      ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 28),
+                    child: SizedBox(
+                      width: 247,
+                      height: 48,
+                      child: FilledButton(
+                          onPressed: ref.watch(orderButtonProvider) ==
+                                  OrderButtonType.before
+                              ? () {
+                                  final res =
+                                      ref.watch(CocktailOrderProvider(id));
+                                  res.when(
+                                      data: (data) {
+                                        ref
+                                            .watch(orderNumProvider.notifier)
+                                            .state = data;
+                                        ref
+                                            .watch(orderButtonProvider.notifier)
+                                            .state = OrderButtonType.done;
+                                      },
+                                      error: (_, __) {},
+                                      loading: () {
+                                        ref
+                                            .read(orderButtonProvider.notifier)
+                                            .state = OrderButtonType.processing;
+                                      });
+                                }
+                              : null,
+                          style: FilledButton.styleFrom(
+                              backgroundColor: Colors.white),
+                          child: const Text(
+                            "注文する",
+                            style: TextStyle(
+                              color: Color(0xFF515151),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20,
+                            ),
+                          )),
+                    ),
+                  )
+                ],
+              );
+            },
+            error: (_, __) {
+              return Container();
+            },
+            loading: () {
+              return SizedBox.shrink();
+            },
+          ),
+        );
+      },
     );
   }
 }
