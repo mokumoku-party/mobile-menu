@@ -346,8 +346,8 @@ void _showModal(BuildContext context, OrderMenu orderMenu) {
               ),
               Container(
                 padding: const EdgeInsets.only(top: 24),
-                child: const Text(
-                  "● Alc. 8%\n● ジン、トニックウォーター、ライム",
+                child: Text(
+                  "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -357,8 +357,8 @@ void _showModal(BuildContext context, OrderMenu orderMenu) {
               Container(
                 padding: const EdgeInsets.only(top: 24),
                 width: 247,
-                child: const Text(
-                  "ドライジンとトニックウォーターをステアし、ライムかレモンを添えたロングカクテルです。",
+                child: Text(
+                  orderMenu.description,
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
