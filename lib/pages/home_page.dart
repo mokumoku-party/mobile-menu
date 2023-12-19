@@ -1,14 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_menu_state.dart';
-import 'package:app/models/self_menu_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rainbow_color/rainbow_color.dart';
-
-List<OrderMenu> orderMenuList = List.empty();
-List<SelfMenu> selfMenuList = List.empty();
 
 final sidebarProvider = StateProvider((ref) => SidebarType.cocktail);
 
@@ -125,16 +121,21 @@ class _OrderMenuList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final orderMenuState = ref.watch(getOrderMenuProvider);
+
     return SingleChildScrollView(
       child: Center(
-        child: Wrap(
+          child: orderMenuState.when(
+        data: (menuList) => Wrap(
           direction: Axis.horizontal,
           alignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
-          children: orderMenuList.map((e) => OrderMenuItem(e.name, e)).toList(),
+          children: menuList.map((e) => OrderMenuItem(e.name, e)).toList(),
         ),
-      ),
+        error: (e, _) => throw e,
+        loading: () => CircularProgressIndicator(),
+      )),
     );
   }
 }
@@ -147,6 +148,7 @@ class _SelfMenuList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useScrollController();
+    final selfMenuState = ref.watch(getSelfMenuProvider);
 
     useEffect(() {
       listener() {
@@ -162,12 +164,18 @@ class _SelfMenuList extends HookConsumerWidget {
     return SingleChildScrollView(
       controller: controller,
       child: Center(
-        child: Wrap(
-          direction: Axis.horizontal,
-          alignment: WrapAlignment.start,
-          spacing: 8,
-          runSpacing: 8,
-          children: selfMenuList.map((e) => MenuItem(e.name)).toList(),
+        child: selfMenuState.when(
+          data: (menuList) {
+            return Wrap(
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.start,
+              spacing: 8,
+              runSpacing: 8,
+              children: menuList.map((e) => MenuItem(e.name)).toList(),
+            );
+          },
+          error: (e, _) => throw e,
+          loading: () => CircularProgressIndicator(),
         ),
       ),
     );
@@ -253,8 +261,6 @@ class _Sidebar extends HookConsumerWidget {
               'カクテル',
               SidebarType.cocktail,
               onTap: () async {
-                orderMenuList = await ref.read(getOrderMenuProvider.future);
-                print(orderMenuList);
                 ref.read(sidebarProvider.notifier).state = SidebarType.cocktail;
               },
             ),
@@ -262,7 +268,6 @@ class _Sidebar extends HookConsumerWidget {
               "その他のドリンク",
               SidebarType.otherDrink,
               onTap: () async {
-                selfMenuList = await ref.read(getSelfMenuProvider.future);
                 ref.read(sidebarProvider.notifier).state =
                     SidebarType.otherDrink;
               },
