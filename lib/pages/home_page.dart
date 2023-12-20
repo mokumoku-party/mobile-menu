@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app/models/cocktail_provider.dart';
+import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -9,20 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rainbow_color/rainbow_color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sidebarProvider = StateProvider((ref) => SidebarType.cocktail);
 final orderButtonProvider = StateProvider((ref) => OrderButtonType.before);
-final orderNumProvider = StateProvider<String?>((ref) => null);
-
-List<String> menuList = [
-  "hoge",
-  "fuga",
-  "piyo",
-  "ジントニック",
-  "マンハッタン",
-  "モスコミュール",
-  "テキーラサンライズ"
-];
+final orderNumProvider = StateProvider<int>((ref) => 0);
 
 const colors = [
   Color.fromARGB(190, 5, 46, 70),
@@ -49,13 +42,17 @@ class HomePage extends HookConsumerWidget {
     final scrollAmount = ref.watch(scrollProvider);
 
     // TODO: ここにポーリング処理をかく
-    final id = ref.watch();
+    final orderId = ref.watch(orderNumProvider);
 
     useEffect(() {
+      if (orderId == 0) {
+        return () {};
+      }
       final timer = Timer.periodic(Duration(seconds: 10), (timer) async {
-        final res = await ref.read(hogeProvider(id).future);
+        final res = await ref.read(getOrderStateProvider(orderId).future);
+        print("ポーリング中");
 
-        if (res.isComplete) {
+        if (res == "calling") {
           timer.cancel();
 
           await showDialog(context: context, builder: (context) => Container());
@@ -65,7 +62,7 @@ class HomePage extends HookConsumerWidget {
       return () {
         timer.cancel();
       };
-    }, [id]);
+    }, [orderId]);
 
     return Container(
       color: rb[1 - scrollAmount],
@@ -131,7 +128,7 @@ class _MainContent extends HookConsumerWidget {
     Widget widget = switch (type) {
       SidebarType.cocktail => const _OrderMenuList(),
       SidebarType.otherDrink => const _SelfMenuList(),
-      SidebarType.other => const _OrderMenuList()
+      SidebarType.orderHistory => const _OrderMenuList()
     };
     return Row(
       children: [const _Sidebar(), Expanded(child: widget)],
@@ -300,10 +297,11 @@ class _Sidebar extends HookConsumerWidget {
               },
             ),
             SidebarButton(
-              "その他",
-              SidebarType.other,
+              "注文履歴",
+              SidebarType.orderHistory,
               onTap: () {
-                ref.read(sidebarProvider.notifier).state = SidebarType.other;
+                ref.read(sidebarProvider.notifier).state =
+                    SidebarType.orderHistory;
               },
             ),
           ],
@@ -469,6 +467,24 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                     ref
                                         .read(orderButtonProvider.notifier)
                                         .state = OrderButtonType.done;
+
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+
+                                    var orderHistoryList =
+                                        prefs.getStringList("orderHistory") ??
+                                            [];
+
+                                    var orderHistory = OrderHistory(
+                                        orderId: res,
+                                        name: orderMenu.name,
+                                        imageUrl: orderMenu.imageUrl);
+
+                                    orderHistoryList
+                                        .add(jsonEncode(orderHistory.toJson()));
+
+                                    prefs.setStringList(
+                                        "orderHistory", orderHistoryList);
                                   }
                                 : null,
                             style: FilledButton.styleFrom(
@@ -493,6 +509,6 @@ class OrderMenuDetailModal extends HookConsumerWidget {
   }
 }
 
-enum SidebarType { cocktail, otherDrink, other }
+enum SidebarType { cocktail, otherDrink, orderHistory }
 
 enum OrderButtonType { before, processing, done }

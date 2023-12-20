@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'order_provider.g.dart';
 
 @riverpod
-Future<String> cocktailOrder(CocktailOrderRef ref, int menuId) async {
+Future<int> cocktailOrder(CocktailOrderRef ref, int menuId) async {
   var res = await http.post(
       Uri.parse("https://cocktailorder-1-l6047017.deta.app/order/$menuId"));
   if (res.statusCode == 422) {
@@ -15,7 +15,7 @@ Future<String> cocktailOrder(CocktailOrderRef ref, int menuId) async {
   }
   var decodedRes = jsonDecode(res.body);
 
-  return Future.value(decodedRes["order_id"]);
+  return Future.value(int.parse(decodedRes["order_id"]));
 }
 
 @Riverpod(keepAlive: true)
@@ -38,4 +38,12 @@ Future<String> notifyCompleteCocktail(
   var decodedRes = jsonDecode(res.body);
 
   return Future.value(decodedRes["resp"]);
+}
+
+@riverpod
+Future<String> getOrderState(GetOrderStateRef ref, int orderId) async {
+  var res = await http.get(Uri.parse(
+      "https://cocktailorder-1-l6047017.deta.app/order_log/status/$orderId"));
+  var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
+  return Future.value(decodedRes["status"]);
 }

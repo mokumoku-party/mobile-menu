@@ -6,7 +6,7 @@ part of 'order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cocktailOrderHash() => r'f149defaf09b0c37241fe66cc2d0c6da17908bee';
+String _$cocktailOrderHash() => r'29d6247db65b23f5c877a638cad7485f7c88a72c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const cocktailOrderProvider = CocktailOrderFamily();
 
 /// See also [cocktailOrder].
-class CocktailOrderFamily extends Family<AsyncValue<String>> {
+class CocktailOrderFamily extends Family<AsyncValue<int>> {
   /// See also [cocktailOrder].
   const CocktailOrderFamily();
 
@@ -72,7 +72,7 @@ class CocktailOrderFamily extends Family<AsyncValue<String>> {
 }
 
 /// See also [cocktailOrder].
-class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
+class CocktailOrderProvider extends AutoDisposeFutureProvider<int> {
   /// See also [cocktailOrder].
   CocktailOrderProvider(
     int menuId,
@@ -107,7 +107,7 @@ class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
 
   @override
   Override overrideWith(
-    FutureOr<String> Function(CocktailOrderRef provider) create,
+    FutureOr<int> Function(CocktailOrderRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,7 +124,7 @@ class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<String> createElement() {
+  AutoDisposeFutureProviderElement<int> createElement() {
     return _CocktailOrderProviderElement(this);
   }
 
@@ -142,13 +142,13 @@ class CocktailOrderProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
-mixin CocktailOrderRef on AutoDisposeFutureProviderRef<String> {
+mixin CocktailOrderRef on AutoDisposeFutureProviderRef<int> {
   /// The parameter `menuId` of this provider.
   int get menuId;
 }
 
 class _CocktailOrderProviderElement
-    extends AutoDisposeFutureProviderElement<String> with CocktailOrderRef {
+    extends AutoDisposeFutureProviderElement<int> with CocktailOrderRef {
   _CocktailOrderProviderElement(super.provider);
 
   @override
@@ -297,6 +297,134 @@ class _NotifyCompleteCocktailProviderElement
 
   @override
   int get orderId => (origin as NotifyCompleteCocktailProvider).orderId;
+}
+
+String _$getOrderStateHash() => r'8e10bdbb5229a29dfb6ba66d4a090fc91f16b896';
+
+/// See also [getOrderState].
+@ProviderFor(getOrderState)
+const getOrderStateProvider = GetOrderStateFamily();
+
+/// See also [getOrderState].
+class GetOrderStateFamily extends Family<AsyncValue<String>> {
+  /// See also [getOrderState].
+  const GetOrderStateFamily();
+
+  /// See also [getOrderState].
+  GetOrderStateProvider call(
+    int orderId,
+  ) {
+    return GetOrderStateProvider(
+      orderId,
+    );
+  }
+
+  @override
+  GetOrderStateProvider getProviderOverride(
+    covariant GetOrderStateProvider provider,
+  ) {
+    return call(
+      provider.orderId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getOrderStateProvider';
+}
+
+/// See also [getOrderState].
+class GetOrderStateProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [getOrderState].
+  GetOrderStateProvider(
+    int orderId,
+  ) : this._internal(
+          (ref) => getOrderState(
+            ref as GetOrderStateRef,
+            orderId,
+          ),
+          from: getOrderStateProvider,
+          name: r'getOrderStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getOrderStateHash,
+          dependencies: GetOrderStateFamily._dependencies,
+          allTransitiveDependencies:
+              GetOrderStateFamily._allTransitiveDependencies,
+          orderId: orderId,
+        );
+
+  GetOrderStateProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.orderId,
+  }) : super.internal();
+
+  final int orderId;
+
+  @override
+  Override overrideWith(
+    FutureOr<String> Function(GetOrderStateRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetOrderStateProvider._internal(
+        (ref) => create(ref as GetOrderStateRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        orderId: orderId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _GetOrderStateProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetOrderStateProvider && other.orderId == orderId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, orderId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetOrderStateRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `orderId` of this provider.
+  int get orderId;
+}
+
+class _GetOrderStateProviderElement
+    extends AutoDisposeFutureProviderElement<String> with GetOrderStateRef {
+  _GetOrderStateProviderElement(super.provider);
+
+  @override
+  int get orderId => (origin as GetOrderStateProvider).orderId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

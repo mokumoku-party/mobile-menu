@@ -21,6 +21,7 @@ dependencies:
   json_annotation: ^4.8.1
   rainbow_color: ^2.0.1
   riverpod_annotation: ^2.3.3
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
