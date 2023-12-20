@@ -30,7 +30,9 @@ class OrderMenuDetailModal extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final res = ref.watch(getOneOrderMenuProvider(id));
-    Widget buttonText = switch (ref.watch(orderButtonProvider)) {
+    final buttonState = ref.watch(orderButtonProvider);
+
+    Widget buttonText = switch (buttonState) {
       OrderButtonType.before => const Text(
           "注文する",
           style: TextStyle(
@@ -49,6 +51,7 @@ class OrderMenuDetailModal extends HookConsumerWidget {
           ),
         )
     };
+
     return DraggableScrollableSheet(
       initialChildSize: 1.0,
       snap: true,
@@ -56,6 +59,9 @@ class OrderMenuDetailModal extends HookConsumerWidget {
         return Container(
           child: res.when(
             data: (orderMenu) {
+              final alcText =
+                  orderMenu.ingredients.map((e) => e.name).join('、');
+
               return Stack(
                 children: [
                   Positioned.fill(
@@ -75,10 +81,10 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                               Container(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 28),
-                                child: const Image(
+                                child: Image(
                                   width: 200,
                                   height: 200,
-                                  image: AssetImage('assets/background.jpg'),
+                                  image: NetworkImage(orderMenu.imageUrl),
                                 ),
                               ),
                               Icon(
@@ -110,7 +116,7 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   horizontal: 64,
                                 ),
                                 child: Text(
-                                  "● Alc. ${orderMenu.alcPercent}%\n● ジン、トニックウォーター、ライム",
+                                  "● Alc. ${orderMenu.alcPercent}%\n● $alcText",
                                   style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
