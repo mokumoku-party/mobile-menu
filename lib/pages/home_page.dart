@@ -191,8 +191,9 @@ class _SelfMenuList extends HookConsumerWidget {
               alignment: WrapAlignment.start,
               spacing: 8,
               runSpacing: 8,
-              children:
-                  menuList.map((e) => MenuItem(e.name, e.imageUrl)).toList(),
+              children: menuList
+                  .map((e) => MenuItem(e.name, e.imageUrl, e.alcPercent))
+                  .toList(),
             );
           },
           error: (e, _) => throw e,
@@ -320,23 +321,31 @@ class OrderMenuItem extends HookConsumerWidget {
 
         showDetailModal(context, orderMenu);
       },
-      child: MenuItem(orderMenu.name, orderMenu.imageUrl),
+      child: MenuItem(
+        orderMenu.name,
+        orderMenu.imageUrl,
+        orderMenu.alcPercent.truncate(),
+      ),
     );
   }
 }
 
 class MenuItem extends StatelessWidget {
-  const MenuItem(
-    this.name,
-    this.imageUrl, {
-    super.key,
-  });
+  const MenuItem(this.name, this.imageUrl, this.alcPercent, {super.key});
 
   final String name;
   final String imageUrl;
+  final int alcPercent;
 
   @override
   Widget build(BuildContext context) {
+    final badgeColor = switch (alcPercent) {
+      == 0 => Color(0xFF26D1DC),
+      <= 10 => Color(0xFF93BD19),
+      <= 20 => Color(0xFFEFBA00),
+      _ => Color(0xFFF5781E),
+    };
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -345,14 +354,52 @@ class MenuItem extends StatelessWidget {
       ),
       padding: EdgeInsets.all(12),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Container(
+        SizedBox(
           width: 112,
           height: 112,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-            ),
-            borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl),
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  padding:
+                      EdgeInsets.only(right: 8, left: 4, top: 2, bottom: 2),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        topRight: Radius.circular(16)),
+                    color: badgeColor,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.local_bar,
+                        size: 12,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 2),
+                      Text(
+                        '$alcPercent%',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Container(
