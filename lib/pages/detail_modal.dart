@@ -23,6 +23,7 @@ void showDetailModal(BuildContext context, OrderMenu orderMenu) {
 
 class OrderMenuDetailModal extends HookConsumerWidget {
   final int id;
+
   const OrderMenuDetailModal(
     this.id, {
     super.key,
@@ -83,7 +84,8 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   if (menuList == null) return;
 
                                   final length = menuList.length;
-                                  final nextId = (id + length) % (length + 1);
+                                  final nextId =
+                                      (idState.value + length) % (length + 1);
 
                                   idState.value = (nextId == 0) ? 1 : nextId;
                                 },
@@ -108,7 +110,8 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   if (menuList == null) return;
 
                                   final length = menuList.length;
-                                  final nextId = (id + 1) % (length + 1);
+                                  final nextId =
+                                      (idState.value + 1) % (length + 1);
 
                                   idState.value = (nextId == 0) ? 1 : nextId;
                                 },
@@ -183,8 +186,9 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                               ? () async {
                                   ref.read(orderButtonProvider.notifier).state =
                                       OrderButtonType.processing;
-                                  final res = await ref
-                                      .read(cocktailOrderProvider(id).future);
+                                  final res = await ref.read(
+                                      cocktailOrderProvider(idState.value)
+                                          .future);
                                   ref.read(orderNumProvider.notifier).state =
                                       res;
                                   ref.read(orderButtonProvider.notifier).state =
