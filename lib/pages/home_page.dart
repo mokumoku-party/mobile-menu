@@ -317,20 +317,43 @@ class SidebarButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEnable = ref.watch(sidebarProvider) == type;
+
     return Container(
-      decoration: BoxDecoration(
-          border: ref.watch(sidebarProvider) == type
-              ? const Border(right: BorderSide(width: 4, color: Colors.white))
-              : null),
       padding: const EdgeInsets.symmetric(vertical: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: RotatedBox(
-          quarterTurns: 3,
-          child: Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
+      child: Container(
+        constraints: BoxConstraints(minHeight: 80),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: onTap,
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+            ),
+            if (isEnable)
+              Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  width: 4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: Colors.white,
+                  ),
+                ),
+              )
+          ],
         ),
       ),
     );
