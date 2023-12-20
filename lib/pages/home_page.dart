@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:app/models/cocktail_provider.dart';
+import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:app/pages/detail_modal.dart';
@@ -125,7 +126,7 @@ class _MainContent extends HookConsumerWidget {
     Widget widget = switch (type) {
       SidebarType.cocktail => const _OrderMenuList(),
       SidebarType.otherDrink => const _SelfMenuList(),
-      SidebarType.orderHistory => const _OrderMenuList()
+      SidebarType.orderHistory => const OrderHistoryLog()
     };
     return Row(
       children: [const _Sidebar(), Expanded(child: widget)],
@@ -196,6 +197,108 @@ class _SelfMenuList extends HookConsumerWidget {
           error: (e, _) => throw e,
           loading: () => CircularProgressIndicator(),
         ),
+      ),
+    );
+  }
+}
+
+class OrderHistoryLog extends HookConsumerWidget {
+  const OrderHistoryLog({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var orderHistoryList = ref.watch(getOrderHistoryProvider);
+    final orderNum = ref.watch(orderNumProvider);
+    return orderHistoryList.when(
+        data: (data) {
+          final dummy =
+              OrderHistory(orderId: -1, name: "None", imageUrl: "None");
+          final orderHistory = data
+              .firstWhere((element) => element.orderId == orderNum, orElse: () {
+            return dummy;
+          });
+          return Column(
+            children: [
+              if (orderHistory != dummy) ...[
+                Text(
+                  "準備中",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                OrderHistoryItem(orderHistory),
+              ],
+              Container(
+                padding: EdgeInsets.only(top: 16, bottom: 16),
+                child: Text(
+                  "完了",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+              ),
+              OrderHistoryItem(OrderHistory)
+            ],
+          );
+        },
+        error: (_, __) => SizedBox.shrink(),
+        loading: () => CircularProgressIndicator());
+  }
+}
+
+class OrderHistoryItem extends StatelessWidget {
+  final OrderHistory;
+
+  const OrderHistoryItem(
+    this.OrderHistory, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Color(0x61FFF0D9),
+      ),
+      height: 80,
+      width: 288,
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            child: Container(
+              height: 70,
+              width: 64,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/background.jpg")),
+              ),
+            ),
+          ),
+          Column(
+            children: const [
+              Text(
+                "ジントニック",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
+              Text(
+                "注文番号：14",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              )
+            ],
+          )
+        ],
       ),
     );
   }

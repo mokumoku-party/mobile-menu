@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_state.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'order_provider.g.dart';
 
@@ -46,4 +48,13 @@ Future<String> getOrderState(GetOrderStateRef ref, int orderId) async {
       "https://cocktailorder-1-l6047017.deta.app/order_log/status/$orderId"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   return Future.value(decodedRes["status"]);
+}
+
+@riverpod
+Future<List<OrderHistory>> getOrderHistory(GetOrderHistoryRef ref) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  var json = prefs.getStringList("orderHistory") ?? [];
+  var orderHistoryList =
+      List.from(json).map((e) => OrderHistory.fromJson(e)).toList();
+  return Future.value(orderHistoryList);
 }

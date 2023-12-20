@@ -426,5 +426,22 @@ class _GetOrderStateProviderElement
   @override
   int get orderId => (origin as GetOrderStateProvider).orderId;
 }
+
+String _$getOrderHistoryHash() => r'2f56e955a51f2ac410b85f588a196eb221fea1c8';
+
+/// See also [getOrderHistory].
+@ProviderFor(getOrderHistory)
+final getOrderHistoryProvider =
+    AutoDisposeFutureProvider<List<OrderHistory>>.internal(
+  getOrderHistory,
+  name: r'getOrderHistoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getOrderHistoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetOrderHistoryRef = AutoDisposeFutureProviderRef<List<OrderHistory>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
