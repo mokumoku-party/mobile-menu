@@ -4,6 +4,7 @@ import 'package:app/models/order_provider.dart';
 import 'package:app/pages/home_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void showDetailModal(BuildContext context, OrderMenu orderMenu) {
@@ -29,7 +30,10 @@ class OrderMenuDetailModal extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final res = ref.watch(getOneOrderMenuProvider(id));
+    final idState = useState(id);
+    final res = ref.watch(getOneOrderMenuProvider(idState.value));
+
+    final menuListState = ref.watch(getOrderMenuProvider);
     final buttonState = ref.watch(orderButtonProvider);
 
     Widget buttonText = switch (buttonState) {
@@ -73,10 +77,21 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
-                                Icons.keyboard_arrow_left,
-                                size: 40,
-                                color: Colors.white.withOpacity(.8),
+                              IconButton(
+                                onPressed: () async {
+                                  final menuList = menuListState.value;
+                                  if (menuList == null) return;
+
+                                  final length = menuList.length;
+                                  final nextId = (id + length) % (length + 1);
+
+                                  idState.value = (nextId == 0) ? 1 : nextId;
+                                },
+                                iconSize: 40,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_left,
+                                  color: Colors.white.withOpacity(.8),
+                                ),
                               ),
                               Container(
                                 padding:
@@ -87,10 +102,21 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   image: NetworkImage(orderMenu.imageUrl),
                                 ),
                               ),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                size: 40,
-                                color: Colors.white.withOpacity(.8),
+                              IconButton(
+                                onPressed: () async {
+                                  final menuList = menuListState.value;
+                                  if (menuList == null) return;
+
+                                  final length = menuList.length;
+                                  final nextId = (id + 1) % (length + 1);
+
+                                  idState.value = (nextId == 0) ? 1 : nextId;
+                                },
+                                iconSize: 40,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Colors.white.withOpacity(.8),
+                                ),
                               ),
                             ],
                           ),
@@ -179,7 +205,7 @@ class OrderMenuDetailModal extends HookConsumerWidget {
               return Container();
             },
             loading: () {
-              return const SizedBox.shrink();
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         );
