@@ -54,6 +54,7 @@ class HomePage extends HookConsumerWidget {
           timer.cancel();
 
           await showDialog(context: context, builder: (context) => Container());
+          ref.read(orderNumProvider.notifier).state = 0;
         }
       });
 
@@ -243,7 +244,9 @@ class OrderHistoryLog extends HookConsumerWidget {
                       color: Colors.white),
                 ),
               ),
-              OrderHistoryItem(OrderHistory)
+              ...data
+                  .where((e) => e != orderHistory)
+                  .map((e) => OrderHistoryItem(e)),
             ],
           );
         },
@@ -253,10 +256,10 @@ class OrderHistoryLog extends HookConsumerWidget {
 }
 
 class OrderHistoryItem extends StatelessWidget {
-  final OrderHistory;
+  final OrderHistory orderHistory;
 
   const OrderHistoryItem(
-    this.OrderHistory, {
+    this.orderHistory, {
     super.key,
   });
 
@@ -280,21 +283,21 @@ class OrderHistoryItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/background.jpg")),
+                    image: NetworkImage(orderHistory.imageUrl)),
               ),
             ),
           ),
           Column(
-            children: const [
+            children: [
               Text(
-                "ジントニック",
+                orderHistory.name,
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
               Text(
-                "注文番号：14",
+                "注文番号：${orderHistory.orderId}",
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
