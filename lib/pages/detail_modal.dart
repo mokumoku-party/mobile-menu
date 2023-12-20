@@ -66,6 +66,16 @@ class OrderMenuDetailModal extends HookConsumerWidget {
       snap: true,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(24),
+            ),
+            gradient: LinearGradient(
+              colors: [Color.fromARGB(255, 49, 58, 70), Color(0xFF182634)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: res.when(
             data: (orderMenu) {
               final alcText =

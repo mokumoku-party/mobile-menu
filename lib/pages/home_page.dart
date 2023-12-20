@@ -151,7 +151,7 @@ class _OrderMenuList extends HookConsumerWidget {
           alignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
-          children: menuList.map((e) => OrderMenuItem(e.name, e)).toList(),
+          children: menuList.map((e) => OrderMenuItem(e)).toList(),
         ),
         error: (e, _) => throw e,
         loading: () => CircularProgressIndicator(),
@@ -191,7 +191,8 @@ class _SelfMenuList extends HookConsumerWidget {
               alignment: WrapAlignment.start,
               spacing: 8,
               runSpacing: 8,
-              children: menuList.map((e) => MenuItem(e.name)).toList(),
+              children:
+                  menuList.map((e) => MenuItem(e.name, e.imageUrl)).toList(),
             );
           },
           error: (e, _) => throw e,
@@ -306,8 +307,7 @@ class OrderHistoryItem extends StatelessWidget {
 
 class OrderMenuItem extends HookConsumerWidget {
   final OrderMenu orderMenu;
-  final String name;
-  const OrderMenuItem(this.name, this.orderMenu, {super.key});
+  const OrderMenuItem(this.orderMenu, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -317,18 +317,20 @@ class OrderMenuItem extends HookConsumerWidget {
 
         showDetailModal(context, orderMenu);
       },
-      child: MenuItem(name),
+      child: MenuItem(orderMenu.name, orderMenu.imageUrl),
     );
   }
 }
 
 class MenuItem extends StatelessWidget {
   const MenuItem(
-    this.name, {
+    this.name,
+    this.imageUrl, {
     super.key,
   });
 
   final String name;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -344,12 +346,19 @@ class MenuItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/background.jpg'))),
+              borderRadius: BorderRadius.circular(16),
+            ),
             width: 112,
             height: 112,
+            child: Image(
+              image: NetworkImage(imageUrl),
+              errorBuilder: (context, _, __) => Center(
+                child: Text(
+                  '画像なし',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ),
         ),
         Container(
@@ -420,20 +429,43 @@ class SidebarButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEnable = ref.watch(sidebarProvider) == type;
+
     return Container(
-      decoration: BoxDecoration(
-          border: ref.watch(sidebarProvider) == type
-              ? const Border(right: BorderSide(width: 4, color: Colors.white))
-              : null),
       padding: const EdgeInsets.symmetric(vertical: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: RotatedBox(
-          quarterTurns: 3,
-          child: Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
+      child: Container(
+        constraints: BoxConstraints(minHeight: 80),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: onTap,
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+            ),
+            if (isEnable)
+              Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  width: 4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: Colors.white,
+                  ),
+                ),
+              )
+          ],
         ),
       ),
     );
