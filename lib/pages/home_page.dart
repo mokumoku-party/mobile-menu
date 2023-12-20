@@ -338,27 +338,18 @@ class MenuItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white.withOpacity(.2),
+        border: Border.all(width: 1, color: Colors.white.withOpacity(.05)),
       ),
-      width: 137,
-      height: 159,
+      padding: EdgeInsets.all(12),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-          padding: const EdgeInsets.only(top: 12),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            width: 112,
-            height: 112,
-            child: Image(
+          width: 112,
+          height: 112,
+          decoration: BoxDecoration(
+            image: DecorationImage(
               image: NetworkImage(imageUrl),
-              errorBuilder: (context, _, __) => Center(
-                child: Text(
-                  '画像なし',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
             ),
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
         Container(
@@ -366,7 +357,10 @@ class MenuItem extends StatelessWidget {
           child: Text(
             name,
             style: const TextStyle(
-                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ]),
