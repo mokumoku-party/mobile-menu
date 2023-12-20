@@ -150,7 +150,7 @@ class _OrderMenuList extends HookConsumerWidget {
           alignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
-          children: menuList.map((e) => OrderMenuItem(e.name, e)).toList(),
+          children: menuList.map((e) => OrderMenuItem(e)).toList(),
         ),
         error: (e, _) => throw e,
         loading: () => CircularProgressIndicator(),
@@ -190,7 +190,8 @@ class _SelfMenuList extends HookConsumerWidget {
               alignment: WrapAlignment.start,
               spacing: 8,
               runSpacing: 8,
-              children: menuList.map((e) => MenuItem(e.name)).toList(),
+              children:
+                  menuList.map((e) => MenuItem(e.name, e.imageUrl)).toList(),
             );
           },
           error: (e, _) => throw e,
@@ -203,8 +204,7 @@ class _SelfMenuList extends HookConsumerWidget {
 
 class OrderMenuItem extends HookConsumerWidget {
   final OrderMenu orderMenu;
-  final String name;
-  const OrderMenuItem(this.name, this.orderMenu, {super.key});
+  const OrderMenuItem(this.orderMenu, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -214,18 +214,20 @@ class OrderMenuItem extends HookConsumerWidget {
 
         showDetailModal(context, orderMenu);
       },
-      child: MenuItem(name),
+      child: MenuItem(orderMenu.name, orderMenu.imageUrl),
     );
   }
 }
 
 class MenuItem extends StatelessWidget {
   const MenuItem(
-    this.name, {
+    this.name,
+    this.imageUrl, {
     super.key,
   });
 
   final String name;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -241,12 +243,19 @@ class MenuItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/background.jpg'))),
+              borderRadius: BorderRadius.circular(16),
+            ),
             width: 112,
             height: 112,
+            child: Image(
+              image: NetworkImage(imageUrl),
+              errorBuilder: (context, _, __) => Center(
+                child: Text(
+                  '画像なし',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ),
         ),
         Container(
