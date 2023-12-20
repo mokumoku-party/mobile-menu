@@ -54,7 +54,9 @@ Future<String> getOrderState(GetOrderStateRef ref, int orderId) async {
 Future<List<OrderHistory>> getOrderHistory(GetOrderHistoryRef ref) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   var json = prefs.getStringList("orderHistory") ?? [];
-  var orderHistoryList =
-      List.from(json).map((e) => OrderHistory.fromJson(e)).toList();
+  var orderHistoryList = List.from(json).map((e) {
+    var tmp = jsonDecode(e);
+    return OrderHistory.fromJson(tmp);
+  }).toList();
   return Future.value(orderHistoryList);
 }

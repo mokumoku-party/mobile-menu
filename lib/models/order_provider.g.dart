@@ -427,7 +427,7 @@ class _GetOrderStateProviderElement
   int get orderId => (origin as GetOrderStateProvider).orderId;
 }
 
-String _$getOrderHistoryHash() => r'2f56e955a51f2ac410b85f588a196eb221fea1c8';
+String _$getOrderHistoryHash() => r'24dbe2cb2d500bdfb86e66fe6b07443c6f53107e';
 
 /// See also [getOrderHistory].
 @ProviderFor(getOrderHistory)

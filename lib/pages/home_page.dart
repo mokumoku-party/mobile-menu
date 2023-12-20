@@ -221,12 +221,15 @@ class OrderHistoryLog extends HookConsumerWidget {
           return Column(
             children: [
               if (orderHistory != dummy) ...[
-                Text(
-                  "準備中",
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                Container(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    "準備中",
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ),
                 ),
                 OrderHistoryItem(orderHistory),
               ],
