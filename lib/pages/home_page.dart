@@ -636,14 +636,14 @@ class _Sidebar extends HookConsumerWidget {
         child: Column(
           children: [
             SidebarButton(
-              'カクテル',
+              'オーダー',
               SidebarType.cocktail,
               onTap: () async {
                 ref.read(sidebarProvider.notifier).state = SidebarType.cocktail;
               },
             ),
             SidebarButton(
-              "その他のドリンク",
+              "セルフ",
               SidebarType.otherDrink,
               onTap: () async {
                 ref.read(sidebarProvider.notifier).state =
