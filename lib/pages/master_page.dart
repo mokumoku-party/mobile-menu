@@ -6,8 +6,8 @@ import 'package:app/models/order_master_provider.dart';
 import 'package:app/models/order_master_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
-import 'package:app/models/order_state.dart';
 import 'package:app/routes/app_router.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,7 +47,6 @@ class MasterPage extends HookConsumerWidget {
               child: Column(
                 children: [
                   Flexible(
-                    flex: 1,
                     child: Column(
                       children: [
                         Padding(
@@ -59,7 +58,6 @@ class MasterPage extends HookConsumerWidget {
                     ),
                   ),
                   Flexible(
-                    flex: 1,
                     child: Column(
                       children: [
                         Padding(
@@ -244,43 +242,62 @@ class _Recipe extends HookConsumerWidget {
         return Container(
           padding: const EdgeInsets.all(16),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(menu.name, style: textTheme.headlineLarge),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  color: scheme.secondary,
-                  child: Text(
-                    switch (menu.method) {
-                      Method.stir => 'ステア',
-                      Method.build => 'ビルド',
-                      Method.shake => 'シェイク',
-                    },
-                    style: TextStyle(color: scheme.onSecondary, fontSize: 32),
+              Row(
+                children: [
+                  Flexible(
+                    child: AutoSizeText(
+                      menu.name,
+                      style: textTheme.headlineLarge,
+                      wrapWords: false,
+                    ),
                   ),
-                ),
-              ),
-              ...menu.ingredients.map(
-                (ingredient) => Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        ingredient.name,
-                        style: const TextStyle(fontSize: 24),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      color: scheme.secondary,
+                      child: Text(
+                        switch (menu.method) {
+                          Method.stir => 'ステア',
+                          Method.build => 'ビルド',
+                          Method.shake => 'シェイク',
+                        },
+                        style:
+                            TextStyle(color: scheme.onSecondary, fontSize: 32),
                       ),
-                      Text(
-                        (ingredient.unit == 'any')
-                            ? '適量'
-                            : '${ingredient.amount} [${ingredient.unit}]',
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
+              Expanded(
+                child: ListView(
+                  children: menu.ingredients
+                      .map(
+                        (ingredient) => Flexible(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: AutoSizeText(
+                                  ingredient.name,
+                                  style: const TextStyle(fontSize: 24),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Text(
+                                (ingredient.unit == 'any')
+                                    ? '適量'
+                                    : '${ingredient.amount} [${ingredient.unit}]',
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
             ],
           ),
         );
@@ -327,21 +344,17 @@ class _WaitingList extends HookConsumerWidget {
 
     return logState.when(
       data: (state) {
-        final filteredState = state
-            .where((element) => element.status == Status.processing)
-            .toList();
-
         return Column(
           children: [
             Text(
-              '注文数 ${filteredState.length}',
+              '注文数 ${state.length}',
               style: textTheme.titleLarge,
             ),
             Flexible(
               child: ListView.builder(
-                itemCount: filteredState.length,
+                itemCount: state.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final item = filteredState[index];
+                  final item = state[index];
                   final isSelected = item.orderId == selected?.orderId;
 
                   return GestureDetector(

@@ -7,7 +7,7 @@ part of 'order_master_provider.dart';
 // **************************************************************************
 
 String _$getOrderLogDisplayHash() =>
-    r'ff961f8354cdd8fdebdaadf4e4b863dd625c70ec';
+    r'8a14e4ad24ec15f05c92af5b4087e6410a9f2d8e';
 
 /// See also [getOrderLogDisplay].
 @ProviderFor(getOrderLogDisplay)
