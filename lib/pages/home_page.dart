@@ -202,7 +202,7 @@ class _OrderMenuList extends HookConsumerWidget {
                 children: menuList.map((e) => OrderMenuItem(e)).toList(),
               ),
             ),
-            SizedBox(height: height),
+            SizedBox(height: height * 2),
             Container(
               padding: EdgeInsets.all(8),
               child: FilledButton(
@@ -473,6 +473,10 @@ class _Sidebar extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isValidSecret = ref.watch(_validSecretMenuProvider);
 
+    final controller =
+        useAnimationController(duration: Duration(milliseconds: 1000))
+          ..repeat();
+
     return Container(
       width: 39,
       decoration: const BoxDecoration(
@@ -509,12 +513,24 @@ class _Sidebar extends HookConsumerWidget {
               duration: Duration(milliseconds: 2000),
               curve: Curves.easeInOutExpo,
               opacity: isValidSecret ? 1 : 0,
-              child: SidebarButton(
-                "裏メニュー",
-                SidebarType.secret,
-                onTap: () {
-                  ref.read(sidebarProvider.notifier).state = SidebarType.secret;
-                },
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (BuildContext context, Widget? child) => ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    HSVColor.fromAHSV(1, 360 * controller.value, .8, 1)
+                        .toColor(),
+                    BlendMode.modulate,
+                  ),
+                  child: child,
+                ),
+                child: SidebarButton(
+                  "裏メニュー",
+                  SidebarType.secret,
+                  onTap: () {
+                    ref.read(sidebarProvider.notifier).state =
+                        SidebarType.secret;
+                  },
+                ),
               ),
             )
           ],
