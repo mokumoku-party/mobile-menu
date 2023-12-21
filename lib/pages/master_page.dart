@@ -29,9 +29,7 @@ class MasterPage extends HookConsumerWidget {
 }
 
 class _WaitingList extends HookConsumerWidget {
-  const _WaitingList({
-    super.key,
-  });
+  const _WaitingList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +38,7 @@ class _WaitingList extends HookConsumerWidget {
     useEffect(() {
       final timer = Timer.periodic(
         const Duration(seconds: 10),
-        (timer) => ref.refresh(getOrderLogDisplayProvider.future),
+        (timer) => ref.invalidate(getOrderLogDisplayProvider),
       );
 
       return timer.cancel;
@@ -74,9 +72,8 @@ class _WaitingList extends HookConsumerWidget {
                         onDoubleTap: () async {
                           final id = int.parse(item.orderId);
 
-                          await ref
-                              .refresh(putOrderLogToCallingProvider(id).future);
-                          await ref.refresh(getOrderLogDisplayProvider.future);
+                          ref.invalidate(putOrderLogToCallingProvider(id));
+                          ref.invalidate(getOrderLogDisplayProvider);
                         },
                         child: Text(
                           item.orderId,
