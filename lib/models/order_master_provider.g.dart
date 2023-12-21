@@ -174,5 +174,134 @@ class _PutOrderLogToCallingProviderElement
   @override
   int get id => (origin as PutOrderLogToCallingProvider).id;
 }
+
+String _$postManualOrderHash() => r'9cb62a3843392c6085f4b7940ab031fb79f2c63b';
+
+/// See also [postManualOrder].
+@ProviderFor(postManualOrder)
+const postManualOrderProvider = PostManualOrderFamily();
+
+/// See also [postManualOrder].
+class PostManualOrderFamily extends Family<AsyncValue<void>> {
+  /// See also [postManualOrder].
+  const PostManualOrderFamily();
+
+  /// See also [postManualOrder].
+  PostManualOrderProvider call(
+    Ingredients ingredients,
+  ) {
+    return PostManualOrderProvider(
+      ingredients,
+    );
+  }
+
+  @override
+  PostManualOrderProvider getProviderOverride(
+    covariant PostManualOrderProvider provider,
+  ) {
+    return call(
+      provider.ingredients,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'postManualOrderProvider';
+}
+
+/// See also [postManualOrder].
+class PostManualOrderProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [postManualOrder].
+  PostManualOrderProvider(
+    Ingredients ingredients,
+  ) : this._internal(
+          (ref) => postManualOrder(
+            ref as PostManualOrderRef,
+            ingredients,
+          ),
+          from: postManualOrderProvider,
+          name: r'postManualOrderProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$postManualOrderHash,
+          dependencies: PostManualOrderFamily._dependencies,
+          allTransitiveDependencies:
+              PostManualOrderFamily._allTransitiveDependencies,
+          ingredients: ingredients,
+        );
+
+  PostManualOrderProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.ingredients,
+  }) : super.internal();
+
+  final Ingredients ingredients;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(PostManualOrderRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PostManualOrderProvider._internal(
+        (ref) => create(ref as PostManualOrderRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        ingredients: ingredients,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _PostManualOrderProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PostManualOrderProvider && other.ingredients == ingredients;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, ingredients.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin PostManualOrderRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `ingredients` of this provider.
+  Ingredients get ingredients;
+}
+
+class _PostManualOrderProviderElement
+    extends AutoDisposeFutureProviderElement<void> with PostManualOrderRef {
+  _PostManualOrderProviderElement(super.provider);
+
+  @override
+  Ingredients get ingredients =>
+      (origin as PostManualOrderProvider).ingredients;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/models/manual_ingredient.dart';
 import 'package:app/models/order_master_state.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,3 +24,23 @@ Future<void> putOrderLogToCalling(PutOrderLogToCallingRef ref, int id) =>
       Uri.parse(
           "https://cocktailorder-1-l6047017.deta.app/order_log/to_calling/$id"),
     );
+
+@riverpod
+Future<void> postManualOrder(
+    PostManualOrderRef ref, Ingredients ingredients) async {
+  final res = await http.post(
+    Uri.parse("https://cocktailorder-1-l6047017.deta.app/manual_order"),
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(ingredients.toJson()),
+  );
+
+  final decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
+
+  final id = int.parse(decodedRes['order_id']);
+  ref.read(putOrderLogToCallingProvider(id));
+
+  return Future.value();
+}

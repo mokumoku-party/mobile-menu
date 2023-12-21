@@ -7,6 +7,7 @@ import 'package:app/models/order_master_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:app/models/order_state.dart';
+import 'package:app/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -63,7 +64,19 @@ class MasterPage extends HookConsumerWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16),
-                          child: Text('在庫', style: textTheme.displayLarge),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('在庫', style: textTheme.displayLarge),
+                              ElevatedButton(
+                                onPressed: () {
+                                  ref.read(appRouterProvider).push('/edit');
+                                },
+                                child: const Text('編集'),
+                              ),
+                            ],
+                          ),
                         ),
                         const Flexible(child: _Zaiko()),
                       ],
@@ -101,6 +114,15 @@ class _Zaiko extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ingredientsState = ref.watch(getIngredientListProvider);
+
+    useEffect(() {
+      final timer = Timer.periodic(
+        const Duration(seconds: 10),
+        (timer) => ref.invalidate(getIngredientListProvider),
+      );
+
+      return timer.cancel;
+    }, const []);
 
     return ingredientsState.when(
       data: (ingredients) {
@@ -312,7 +334,7 @@ class _WaitingList extends HookConsumerWidget {
         return Column(
           children: [
             Text(
-              '注文数 ${state.length}',
+              '注文数 ${filteredState.length}',
               style: textTheme.titleLarge,
             ),
             Flexible(

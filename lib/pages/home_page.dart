@@ -171,45 +171,84 @@ class _Body extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          Container(
-            width: 24,
-          ),
-          Container(
-            height: 61,
-            width: 284,
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(top: 16),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  width: 1.0,
-                  color: Colors.white,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: Container(
+                height: 61,
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(top: 16),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 1.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: const [
+                    Text(
+                      "var foo = Bar",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Inter",
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child:
+                          Icon(Icons.nightlife, color: Colors.white, size: 32),
+                    ),
+                  ],
                 ),
               ),
             ),
-            child: Row(
-              children: const [
-                Text(
-                  "var foo = Bar",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "Inter",
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Icon(Icons.nightlife, color: Colors.white, size: 32),
-                ),
-              ],
+            Container(
+              alignment: Alignment.topLeft,
+              child: _OrderDisplay(),
             ),
-          ),
-        ]),
+          ],
+        ),
         Container(height: 35),
         const Flexible(child: _MainContent())
       ],
+    );
+  }
+}
+
+class _OrderDisplay extends ConsumerWidget {
+  const _OrderDisplay({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderId = ref.watch(orderNumProvider);
+
+    if (orderId == 0) {
+      return SizedBox.shrink();
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8)),
+        color: Color.fromARGB(176, 37, 45, 66),
+      ),
+      child: Text(
+        '準備中\n$orderId番',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
