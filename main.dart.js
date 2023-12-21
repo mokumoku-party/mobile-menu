@@ -42678,8 +42678,8 @@ A.U1.prototype={
 cT(a,b){var s,r,q,p,o,n=null,m=b.df($.auc(),t.y),l=A.cE(0,5000,0),k=$.hS.j8(B.UP,t.dd)
 l=$.hS.j8(new A.BN(l,n,n,0,0,1,k,B.D,n),t.A_)
 l.HA()
-s=A.abK("\u30ab\u30af\u30c6\u30eb",B.k2,new A.alQ(b))
-r=A.abK("\u305d\u306e\u4ed6\u306e\u30c9\u30ea\u30f3\u30af",B.xA,new A.alR(b))
+s=A.abK("\u30aa\u30fc\u30c0\u30fc",B.k2,new A.alQ(b))
+r=A.abK("\u30bb\u30eb\u30d5",B.xA,new A.alR(b))
 q=A.abK("\u6ce8\u6587\u5c65\u6b74",B.xB,new A.alS(b))
 p=A.cE(0,2000,0)
 o=m?1:0
