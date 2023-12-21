@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_master_provider.dart';
+import 'package:app/models/order_master_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:app/models/order_state.dart';
@@ -10,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final _selectedNameProvider = StateProvider.autoDispose((ref) => '');
+final _selectedProvider =
+    StateProvider.autoDispose<OrderMasterState?>((ref) => null);
 
 class MasterPage extends HookConsumerWidget {
   const MasterPage({Key? key}) : super(key: key);
@@ -147,18 +149,19 @@ class _Recipe extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menuListState = ref.watch(getOrderMenuProvider);
-    final name = ref.watch(_selectedNameProvider);
+    final selected = ref.watch(_selectedProvider);
 
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    if (name.isEmpty) {
+    if (selected == null) {
       return const Center(child: Text('選択なし'));
     }
 
     return menuListState.when(
       data: (menuList) {
-        final menu = menuList.firstWhere((element) => element.name == name);
+        final menu =
+            menuList.firstWhere((element) => element.name == selected.menuName);
 
         return Container(
           padding: const EdgeInsets.all(16),
@@ -221,7 +224,7 @@ class _WaitingList extends HookConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final selectedId = ref.watch(_selectedNameProvider);
+    final selected = ref.watch(_selectedProvider);
 
     useEffect(() {
       final timer = Timer.periodic(
@@ -249,17 +252,18 @@ class _WaitingList extends HookConsumerWidget {
                 itemCount: filteredState.length,
                 itemBuilder: (BuildContext context, int index) {
                   final item = filteredState[index];
-                  final isSelected = item.orderId == selectedId;
+                  final isSelected = item.orderId == selected?.orderId;
 
                   return GestureDetector(
                     onTap: () {
-                      ref.read(_selectedNameProvider.notifier).state =
-                          item.menuName;
+                      ref.read(_selectedProvider.notifier).state = item;
                     },
                     child: Card(
                       shape: isSelected
                           ? RoundedRectangleBorder(
-                              side: BorderSide(color: scheme.secondary))
+                              side:
+                                  BorderSide(color: scheme.secondary, width: 2),
+                            )
                           : null,
                       child: Container(
                         padding: const EdgeInsets.all(4),
