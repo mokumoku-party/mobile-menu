@@ -7,7 +7,7 @@ part of 'order_master_provider.dart';
 // **************************************************************************
 
 String _$getOrderLogDisplayHash() =>
-    r'8a14e4ad24ec15f05c92af5b4087e6410a9f2d8e';
+    r'08ee73c7b57c8cdcc1a8c5cecc75fdaaaaf0f368';
 
 /// See also [getOrderLogDisplay].
 @ProviderFor(getOrderLogDisplay)
@@ -23,6 +23,41 @@ final getOrderLogDisplayProvider =
 );
 
 typedef GetOrderLogDisplayRef
+    = AutoDisposeFutureProviderRef<List<OrderMasterState>>;
+String _$getOrderProcessingHash() =>
+    r'4ea6cd46633ff6f39559fb8b84040ad4a1e2974f';
+
+/// See also [getOrderProcessing].
+@ProviderFor(getOrderProcessing)
+final getOrderProcessingProvider =
+    AutoDisposeFutureProvider<List<OrderMasterState>>.internal(
+  getOrderProcessing,
+  name: r'getOrderProcessingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getOrderProcessingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetOrderProcessingRef
+    = AutoDisposeFutureProviderRef<List<OrderMasterState>>;
+String _$getOrderCallingHash() => r'6c413105b7cb473d01c6e6e1b0d4265053ec3812';
+
+/// See also [getOrderCalling].
+@ProviderFor(getOrderCalling)
+final getOrderCallingProvider =
+    AutoDisposeFutureProvider<List<OrderMasterState>>.internal(
+  getOrderCalling,
+  name: r'getOrderCallingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getOrderCallingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetOrderCallingRef
     = AutoDisposeFutureProviderRef<List<OrderMasterState>>;
 String _$putOrderLogToCallingHash() =>
     r'a890980ffa935ef340f1d125c0719d02f764bce8';

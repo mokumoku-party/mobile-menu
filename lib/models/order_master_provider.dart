@@ -14,12 +14,26 @@ Future<List<OrderMasterState>> getOrderLogDisplay(
   var res = await http.get(
       Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_log/display"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
-  final list = List.from(decodedRes)
-      .map((e) => OrderMasterState.fromJson(e))
-      .where((element) => element.status == Status.processing)
-      .toList();
+  final list =
+      List.from(decodedRes).map((e) => OrderMasterState.fromJson(e)).toList();
 
   return Future.value(list);
+}
+
+@riverpod
+Future<List<OrderMasterState>> getOrderProcessing(
+    GetOrderLogDisplayRef ref) async {
+  final list = await ref.refresh(getOrderLogDisplayProvider.future);
+
+  return list.where((element) => element.status == Status.processing).toList();
+}
+
+@riverpod
+Future<List<OrderMasterState>> getOrderCalling(
+    GetOrderLogDisplayRef ref) async {
+  final list = await ref.refresh(getOrderLogDisplayProvider.future);
+
+  return list.where((element) => element.status == Status.calling).toList();
 }
 
 @riverpod

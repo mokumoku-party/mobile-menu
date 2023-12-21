@@ -321,7 +321,7 @@ class _WaitingList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logState = ref.watch(getOrderLogDisplayProvider);
+    final logState = ref.watch(getOrderProcessingProvider);
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -331,7 +331,7 @@ class _WaitingList extends HookConsumerWidget {
       final timer = Timer.periodic(
         const Duration(seconds: 10),
         (timer) async {
-          final orderLog = await ref.refresh(getOrderLogDisplayProvider.future);
+          final orderLog = await ref.refresh(getOrderProcessingProvider.future);
 
           if (!orderLog.contains(ref.read(_selectedProvider))) {
             ref.read(_selectedProvider.notifier).state = null;
