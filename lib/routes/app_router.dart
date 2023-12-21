@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final appRouterProvider = Provider(
   (ref) => GoRouter(
-    initialLocation: '/master',
     routes: [
       GoRoute(
         path: '/',
