@@ -89,7 +89,9 @@ class _Recipe extends HookConsumerWidget {
                         style: const TextStyle(fontSize: 24),
                       ),
                       Text(
-                        '${ingredient.amount} [${ingredient.unit}]',
+                        (ingredient.unit == 'any')
+                            ? '適量'
+                            : '${ingredient.amount} [${ingredient.unit}]',
                         style: const TextStyle(fontSize: 24),
                       ),
                     ],
