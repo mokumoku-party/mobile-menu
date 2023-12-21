@@ -41825,7 +41825,7 @@ p=A.as9(A.W(13,255,255,255),1)
 o=t.p
 return A.bg(n,A.da(A.a([A.dr(A.jy(B.bC,A.a([A.bg(n,n,B.l,n,n,new A.bQ(n,A.aoo(n,new A.mj(this.d)),n,A.iY(16),n,n,B.a_),n,n,n,n),new A.dP(B.yr,n,n,A.bg(n,A.hi(A.a([A.xj(B.Db,B.i,n,12),A.dr(n,n,2),A.bW(""+m+"%",n,n,n,n,n,n,n,A.fO(n,n,B.i,n,n,n,n,n,n,n,n,12,n,n,B.aV,n,n,!0,n,n,n,n,n,n,n,n),n,n,n)],o),B.z,B.M,B.bg),B.l,n,n,new A.bQ(s,n,n,new A.bP(B.w,new A.at(16,16),new A.at(8,8),B.w),n,n,B.a_),n,n,new A.aj(4,2,8,2),n),n)],o),B.V,B.bk),112,112),A.bg(n,A.bW(this.c,n,n,n,n,n,n,n,B.Nw,n,n,n),B.l,n,n,n,n,n,B.Cq,n)],o),B.z,B.dL,B.N),B.l,n,n,new A.bQ(q,n,p,r,n,n,B.a_),n,n,new A.aj(12,12,12,12),n)}}
 A.ST.prototype={
-dI(a,b){var s,r,q,p,o,n=null,m=b.dN($.arL(),t.y),l=A.cw(0,1000,0),k=$.ko.ls(B.TN,t.dd)
+dI(a,b){var s,r,q,p,o,n=null,m=b.dN($.arL(),t.y),l=A.cw(0,5000,0),k=$.ko.ls(B.TN,t.dd)
 l=$.ko.ls(new A.B6(l,n,n,0,0,1,k,B.E,n),t.A_)
 l.Gt()
 s=A.aam("\u30ab\u30af\u30c6\u30eb",B.jE,new A.ak0(b))
