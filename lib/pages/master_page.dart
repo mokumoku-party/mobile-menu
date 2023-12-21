@@ -34,6 +34,7 @@ class _WaitingList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final logState = ref.watch(getOrderLogDisplayProvider);
+    final scheme = Theme.of(context).colorScheme;
 
     useEffect(() {
       final timer = Timer.periodic(
@@ -61,23 +62,35 @@ class _WaitingList extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Text(item.menuName, style: const TextStyle(fontSize: 32)),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.green,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 4),
-                      child: GestureDetector(
-                        onDoubleTap: () async {
-                          final id = int.parse(item.orderId);
+                    GestureDetector(
+                      onDoubleTap: () {
+                        final id = int.parse(item.orderId);
 
-                          ref.invalidate(putOrderLogToCallingProvider(id));
-                          ref.invalidate(getOrderLogDisplayProvider);
-                        },
-                        child: Text(
-                          item.orderId,
-                          style: const TextStyle(fontSize: 48),
+                        ref.invalidate(putOrderLogToCallingProvider(id));
+                        ref.invalidate(getOrderLogDisplayProvider);
+
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text('$id番呼び出し中')));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: scheme.primary,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.notifications,
+                                size: 32, color: scheme.onPrimary),
+                            Text(
+                              item.orderId,
+                              style: TextStyle(
+                                  fontSize: 32, color: scheme.onPrimary),
+                            ),
+                          ],
                         ),
                       ),
                     ),
