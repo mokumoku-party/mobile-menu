@@ -18,6 +18,7 @@ class MasterPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: Row(
@@ -26,19 +27,43 @@ class MasterPage extends HookConsumerWidget {
           Flexible(
             child: SizedBox(
               width: width * .33,
-              child: const _WaitingList(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('注文リスト', style: textTheme.displayLarge),
+                  ),
+                  const Flexible(child: _WaitingList()),
+                ],
+              ),
             ),
           ),
           Flexible(
             child: SizedBox(
               width: width * .33,
-              child: const _Recipe(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('レシピ', style: textTheme.displayLarge),
+                  ),
+                  const Flexible(child: _Recipe()),
+                ],
+              ),
             ),
           ),
           Flexible(
             child: SizedBox(
               width: width * .33,
-              child: const _Order(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('注文', style: textTheme.displayLarge),
+                  ),
+                  const Flexible(child: _Order()),
+                ],
+              ),
             ),
           )
         ],
@@ -70,8 +95,8 @@ class _Order extends HookConsumerWidget {
           children: menuList
               .where((e) => e.stock > 0)
               .map(
-                (e) => InkWell(
-                  onTap: () {
+                (e) => GestureDetector(
+                  onDoubleTap: () {
                     ref.refresh(cocktailOrderProvider(e.id));
                   },
                   child: Card(
@@ -194,6 +219,8 @@ class _WaitingList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logState = ref.watch(getOrderLogDisplayProvider);
     final scheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     final selectedId = ref.watch(_selectedNameProvider);
 
     useEffect(() {
@@ -211,64 +238,78 @@ class _WaitingList extends HookConsumerWidget {
             .where((element) => element.status == Status.processing)
             .toList();
 
-        return ListView.builder(
-          itemCount: filteredState.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = filteredState[index];
-            final isSelected = item.orderId == selectedId;
+        return Column(
+          children: [
+            Text(
+              '注文数 ${state.length}',
+              style: textTheme.titleLarge,
+            ),
+            Flexible(
+              child: ListView.builder(
+                itemCount: filteredState.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = filteredState[index];
+                  final isSelected = item.orderId == selectedId;
 
-            return GestureDetector(
-              onTap: () {
-                ref.read(_selectedNameProvider.notifier).state = item.menuName;
-              },
-              child: Card(
-                shape: isSelected
-                    ? RoundedRectangleBorder(
-                        side: BorderSide(color: scheme.secondary))
-                    : null,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    children: [
-                      Text(item.menuName, style: const TextStyle(fontSize: 32)),
-                      GestureDetector(
-                        onDoubleTap: () {
-                          final id = int.parse(item.orderId);
+                  return GestureDetector(
+                    onTap: () {
+                      ref.read(_selectedNameProvider.notifier).state =
+                          item.menuName;
+                    },
+                    child: Card(
+                      shape: isSelected
+                          ? RoundedRectangleBorder(
+                              side: BorderSide(color: scheme.secondary))
+                          : null,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        child: Column(
+                          children: [
+                            Text(item.menuName,
+                                style: const TextStyle(fontSize: 32)),
+                            GestureDetector(
+                              onDoubleTap: () {
+                                final id = int.parse(item.orderId);
 
-                          ref.refresh(putOrderLogToCallingProvider(id));
-                          ref.refresh(getOrderLogDisplayProvider);
+                                ref.refresh(putOrderLogToCallingProvider(id));
+                                ref.refresh(getOrderLogDisplayProvider);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('$id番呼び出し中')));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: scheme.primary,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 4),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.notifications,
-                                  size: 32, color: scheme.onPrimary),
-                              Text(
-                                item.orderId,
-                                style: TextStyle(
-                                    fontSize: 32, color: scheme.onPrimary),
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('$id番呼び出し中')));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: scheme.primary,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 4),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(Icons.notifications,
+                                        size: 32, color: scheme.onPrimary),
+                                    Text(
+                                      item.orderId,
+                                      style: TextStyle(
+                                          fontSize: 32,
+                                          color: scheme.onPrimary),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ],
         );
       },
       error: (_, __) => const Text('エラー'),
