@@ -97,11 +97,18 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   final menuList = menuListState.value;
                                   if (menuList == null) return;
 
-                                  final length = menuList.length;
-                                  final nextId =
-                                      (idState.value + length) % (length + 1);
+                                  final index = menuList
+                                      .asMap()
+                                      .entries
+                                      .firstWhere(
+                                          (mp) => mp.value.id == idState.value)
+                                      .key;
 
-                                  idState.value = (nextId == 0) ? 1 : nextId;
+                                  final length = menuList.length;
+                                  final prevIndex =
+                                      (index + length - 1) % length;
+
+                                  idState.value = menuList[prevIndex].id;
                                 },
                                 iconSize: 40,
                                 icon: Icon(
@@ -128,11 +135,17 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   final menuList = menuListState.value;
                                   if (menuList == null) return;
 
-                                  final length = menuList.length;
-                                  final nextId =
-                                      (idState.value + 1) % (length + 1);
+                                  final index = menuList
+                                      .asMap()
+                                      .entries
+                                      .firstWhere(
+                                          (mp) => mp.value.id == idState.value)
+                                      .key;
 
-                                  idState.value = (nextId == 0) ? 1 : nextId;
+                                  final nextIndex =
+                                      (index + 1) % menuList.length;
+
+                                  idState.value = menuList[nextIndex].id;
                                 },
                                 iconSize: 40,
                                 icon: Icon(
