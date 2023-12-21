@@ -39,27 +39,6 @@ class OrderMenuDetailModal extends HookConsumerWidget {
     final res = ref.watch(getOneOrderMenuProvider(idState.value));
 
     final menuListState = ref.watch(getOrderMenuProvider);
-    final buttonState = ref.watch(orderButtonProvider);
-
-    Widget buttonText = switch (buttonState) {
-      OrderButtonType.before => const Text(
-          "注文する",
-          style: TextStyle(
-            color: Color(0xFF515151),
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-        ),
-      OrderButtonType.processing => const CircularProgressIndicator(),
-      OrderButtonType.done => const Text(
-          "注文完了",
-          style: TextStyle(
-            color: Color(0xFF515151),
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-        )
-    };
 
     return DraggableScrollableSheet(
       initialChildSize: 1.0,
@@ -209,50 +188,7 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 48),
-                      child: SizedBox(
-                        width: 247,
-                        height: 48,
-                        child: FilledButton(
-                          onPressed: ref.watch(orderButtonProvider) ==
-                                  OrderButtonType.before
-                              ? () async {
-                                  ref.read(orderButtonProvider.notifier).state =
-                                      OrderButtonType.processing;
-                                  final res = await ref
-                                      .read(cocktailOrderProvider(id).future);
-                                  ref.read(orderNumProvider.notifier).state =
-                                      res;
-                                  ref.read(orderButtonProvider.notifier).state =
-                                      OrderButtonType.done;
-
-                                  final SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-
-                                  var orderHistoryList =
-                                      prefs.getStringList("orderHistory") ?? [];
-
-                                  var orderHistory = OrderHistory(
-                                      orderId: res,
-                                      name: orderMenu.name,
-                                      imageUrl: orderMenu.imageUrl);
-
-                                  orderHistoryList
-                                      .add(jsonEncode(orderHistory.toJson()));
-                                  prefs.setInt(
-                                      "nowOrderId", orderHistory.orderId);
-
-                                  prefs.setString("nowOrderMenu",
-                                      jsonEncode(orderHistory.toJson()));
-
-                                  prefs.setStringList(
-                                      "orderHistory", orderHistoryList);
-                                }
-                              : null,
-                          style: FilledButton.styleFrom(
-                              backgroundColor: Colors.white),
-                          child: buttonText,
-                        ),
-                      ),
+                      child: _OrderButton(id: id, menu: orderMenu),
                     ),
                   ),
                 ],
@@ -267,6 +203,82 @@ class OrderMenuDetailModal extends HookConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _OrderButton extends HookConsumerWidget {
+  const _OrderButton({
+    super.key,
+    required this.id,
+    required this.menu,
+  });
+
+  final int id;
+  final OrderMenu menu;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final buttonState = ref.watch(orderButtonProvider);
+
+    Widget buttonText = switch (buttonState) {
+      OrderButtonType.before => const Text(
+          "注文する",
+          style: TextStyle(
+            color: Color(0xFF515151),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+      OrderButtonType.processing => const CircularProgressIndicator(),
+      OrderButtonType.done => const Text(
+          "注文完了",
+          style: TextStyle(
+            color: Color(0xFF515151),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        )
+    };
+    final orderButtonState = ref.watch(orderButtonProvider);
+    final orderNum = ref.watch(orderNumProvider);
+    final isActive =
+        orderButtonState == OrderButtonType.before && (orderNum == 0);
+
+    return SizedBox(
+      width: 247,
+      height: 48,
+      child: FilledButton(
+        onPressed: isActive
+            ? () async {
+                ref.read(orderButtonProvider.notifier).state =
+                    OrderButtonType.processing;
+                final res = await ref.read(cocktailOrderProvider(id).future);
+                ref.read(orderNumProvider.notifier).state = res;
+                ref.read(orderButtonProvider.notifier).state =
+                    OrderButtonType.done;
+
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+
+                var orderHistoryList =
+                    prefs.getStringList("orderHistory") ?? [];
+
+                var orderHistory = OrderHistory(
+                    orderId: res, name: menu.name, imageUrl: menu.imageUrl);
+
+                orderHistoryList.add(jsonEncode(orderHistory.toJson()));
+                prefs.setInt("nowOrderId", orderHistory.orderId);
+
+                prefs.setString(
+                    "nowOrderMenu", jsonEncode(orderHistory.toJson()));
+
+                prefs.setStringList("orderHistory", orderHistoryList);
+              }
+            : null,
+        style: FilledButton.styleFrom(backgroundColor: Colors.white),
+        child: buttonText,
+      ),
     );
   }
 }
