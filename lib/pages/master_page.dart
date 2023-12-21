@@ -23,17 +23,59 @@ class MasterPage extends HookConsumerWidget {
         children: [
           Flexible(
             child: SizedBox(
-              width: width * .5,
+              width: width * .33,
               child: const _WaitingList(),
             ),
           ),
           Flexible(
             child: SizedBox(
-              width: width * .5,
+              width: width * .33,
               child: const _Recipe(),
             ),
           ),
+          Flexible(
+            child: SizedBox(
+              width: width * .33,
+              child: const _Order(),
+            ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class _Order extends HookConsumerWidget {
+  const _Order();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final menuListState = ref.watch(getOrderMenuProvider);
+
+    return menuListState.when(
+      data: (menuList) {
+        return Column(
+          children: menuList
+              .map(
+                (e) => InkWell(
+                  onTap: () {},
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        e.name,
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        );
+      },
+      error: (_, __) => const Text('エラー'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -158,8 +200,8 @@ class _WaitingList extends HookConsumerWidget {
                         onDoubleTap: () {
                           final id = int.parse(item.orderId);
 
-                          ref.invalidate(putOrderLogToCallingProvider(id));
-                          ref.invalidate(getOrderLogDisplayProvider);
+                          ref.refresh(putOrderLogToCallingProvider(id));
+                          ref.refresh(getOrderLogDisplayProvider);
 
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('$id番呼び出し中')));
