@@ -55,6 +55,15 @@ class _Order extends HookConsumerWidget {
     final menuListState = ref.watch(getOrderMenuProvider);
     final scheme = Theme.of(context).colorScheme;
 
+    useEffect(() {
+      final timer = Timer.periodic(
+        const Duration(seconds: 10),
+        (timer) => ref.invalidate(getOrderMenuProvider),
+      );
+
+      return timer.cancel;
+    }, const []);
+
     return menuListState.when(
       data: (menuList) {
         return Column(
