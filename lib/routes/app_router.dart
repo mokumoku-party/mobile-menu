@@ -1,3 +1,4 @@
+import 'package:app/pages/edit_page.dart';
 import 'package:app/pages/home_page.dart';
 import 'package:app/pages/master_page.dart';
 import 'package:app/pages/order_display_page.dart';
@@ -19,6 +20,10 @@ final appRouterProvider = Provider(
         path: '/master',
         builder: (context, state) => const MasterPage(),
       ),
+      GoRoute(
+        path: '/edit',
+        builder: (context, state) => const EditPage(),
+      )
     ],
   ),
 );
