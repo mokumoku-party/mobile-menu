@@ -15,6 +15,9 @@ Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var selfMenuList =
       List.from(decodedRes).map((e) => SelfMenu.fromJson(e)).toList();
+
+  selfMenuList.sort((a, b) => a.alcPercent.compareTo(b.alcPercent));
+
   return Future.value(selfMenuList);
   // return Future.value([SelfMenu( id: 0, name: "", alcPercent: 0)]);
 }
@@ -26,6 +29,9 @@ Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var orderMenuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
+
+  orderMenuList.sort((a, b) => a.alcPercent.compareTo(b.alcPercent));
+
   return Future.value(orderMenuList);
 }
 
@@ -36,6 +42,9 @@ Future<List<OrderMenu>> getSecretMenu(GetSecretMenuRef ref) async {
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var menuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
+
+  menuList.sort((a, b) => a.alcPercent.compareTo(b.alcPercent));
+
   return Future.value(menuList);
 }
 

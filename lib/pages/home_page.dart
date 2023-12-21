@@ -104,19 +104,29 @@ class _Body extends StatelessWidget {
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(top: 16),
             decoration: const BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-              width: 1.0,
-              color: Colors.white,
-            ))),
-            child: const Text(
-              "var foo = Bar",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Inter",
+              border: Border(
+                bottom: BorderSide(
+                  width: 1.0,
+                  color: Colors.white,
+                ),
               ),
+            ),
+            child: Row(
+              children: const [
+                Text(
+                  "var foo = Bar",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "Inter",
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Icon(Icons.nightlife, color: Colors.white, size: 32),
+                ),
+              ],
             ),
           ),
         ]),
@@ -497,7 +507,7 @@ class _Sidebar extends HookConsumerWidget {
     final isValidSecret = ref.watch(_validSecretMenuProvider);
 
     final controller =
-        useAnimationController(duration: Duration(milliseconds: 1000))
+        useAnimationController(duration: Duration(milliseconds: 5000))
           ..repeat();
 
     return Container(
