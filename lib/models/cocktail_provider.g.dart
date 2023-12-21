@@ -20,7 +20,7 @@ final getSelfMenuProvider = FutureProvider<List<SelfMenu>>.internal(
 );
 
 typedef GetSelfMenuRef = FutureProviderRef<List<SelfMenu>>;
-String _$getOrderMenuHash() => r'6d193b11424fbf8dcd33f877dc4288b394822b03';
+String _$getOrderMenuHash() => r'6b003f8959b4687a4401b0fbccea863fbf041126';
 
 /// See also [getOrderMenu].
 @ProviderFor(getOrderMenu)
@@ -34,6 +34,21 @@ final getOrderMenuProvider = FutureProvider<List<OrderMenu>>.internal(
 );
 
 typedef GetOrderMenuRef = FutureProviderRef<List<OrderMenu>>;
+String _$getSecretMenuHash() => r'06e47a803563abd604cb7ead3e991e99584548d3';
+
+/// See also [getSecretMenu].
+@ProviderFor(getSecretMenu)
+final getSecretMenuProvider = FutureProvider<List<OrderMenu>>.internal(
+  getSecretMenu,
+  name: r'getSecretMenuProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getSecretMenuHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetSecretMenuRef = FutureProviderRef<List<OrderMenu>>;
 String _$getOneOrderMenuHash() => r'ead4ad6ca74e2de073b92975b31fad20a1eb73cc';
 
 /// Copied from Dart SDK
@@ -184,7 +199,7 @@ class _GetOneOrderMenuProviderElement
   int get menuId => (origin as GetOneOrderMenuProvider).menuId;
 }
 
-String _$getIngredientListHash() => r'cd8487df1cf66dae2fa9ff0a2968ecbb708bcea6';
+String _$getIngredientListHash() => r'413adb048ab2a00038480fccaefe5024ee2bc325';
 
 /// See also [getIngredientList].
 @ProviderFor(getIngredientList)

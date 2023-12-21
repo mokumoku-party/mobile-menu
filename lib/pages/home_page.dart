@@ -28,6 +28,7 @@ final rb = Rainbow(
 );
 
 final scrollProvider = StateProvider((ref) => 0.0);
+final _validSecretMenuProvider = StateProvider((ref) => false);
 
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -123,10 +124,43 @@ class _MainContent extends HookConsumerWidget {
     Widget widget = switch (type) {
       SidebarType.cocktail => const _OrderMenuList(),
       SidebarType.otherDrink => const _SelfMenuList(),
-      SidebarType.orderHistory => const OrderHistoryLog()
+      SidebarType.orderHistory => const OrderHistoryLog(),
+      SidebarType.secret => const _SecretMenuList(),
     };
     return Row(
       children: [const _Sidebar(), Expanded(child: widget)],
+    );
+  }
+}
+
+class _SecretMenuList extends HookConsumerWidget {
+  const _SecretMenuList();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final menuState = ref.watch(getSecretMenuProvider);
+
+    return SingleChildScrollView(
+      child: Center(
+        child: menuState.when(
+          data: (menuList) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.start,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: menuList.map((e) => OrderMenuItem(e)).toList(),
+                ),
+              ),
+            ],
+          ),
+          error: (e, _) => throw e,
+          loading: () => CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }
@@ -171,7 +205,12 @@ class _OrderMenuList extends HookConsumerWidget {
             SizedBox(height: height),
             Container(
               padding: EdgeInsets.all(8),
-              child: FilledButton(onPressed: () {}, child: Text('裏メニューを表示')),
+              child: FilledButton(
+                onPressed: () {
+                  ref.read(_validSecretMenuProvider.notifier).state = true;
+                },
+                child: Text('裏メニューを表示'),
+              ),
             ),
           ],
         ),
@@ -432,6 +471,8 @@ class _Sidebar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isValidSecret = ref.watch(_validSecretMenuProvider);
+
     return Container(
       width: 39,
       decoration: const BoxDecoration(
@@ -464,6 +505,18 @@ class _Sidebar extends HookConsumerWidget {
                     SidebarType.orderHistory;
               },
             ),
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 2000),
+              curve: Curves.easeInOutExpo,
+              opacity: isValidSecret ? 1 : 0,
+              child: SidebarButton(
+                "裏メニュー",
+                SidebarType.secret,
+                onTap: () {
+                  ref.read(sidebarProvider.notifier).state = SidebarType.secret;
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -523,6 +576,6 @@ class SidebarButton extends HookConsumerWidget {
   }
 }
 
-enum SidebarType { cocktail, otherDrink, orderHistory }
+enum SidebarType { cocktail, otherDrink, orderHistory, secret }
 
 enum OrderButtonType { before, processing, done }
