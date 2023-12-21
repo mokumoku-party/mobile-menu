@@ -25,7 +25,7 @@ final getOrderLogDisplayProvider =
 typedef GetOrderLogDisplayRef
     = AutoDisposeFutureProviderRef<List<OrderMasterState>>;
 String _$getOrderProcessingHash() =>
-    r'4ea6cd46633ff6f39559fb8b84040ad4a1e2974f';
+    r'50ed9b39b720ef29209a52a94d74ee9d104e428a';
 
 /// See also [getOrderProcessing].
 @ProviderFor(getOrderProcessing)
@@ -42,7 +42,7 @@ final getOrderProcessingProvider =
 
 typedef GetOrderProcessingRef
     = AutoDisposeFutureProviderRef<List<OrderMasterState>>;
-String _$getOrderCallingHash() => r'6c413105b7cb473d01c6e6e1b0d4265053ec3812';
+String _$getOrderCallingHash() => r'b422196810f63d2547db7130f56c90848be9b4b8';
 
 /// See also [getOrderCalling].
 @ProviderFor(getOrderCalling)

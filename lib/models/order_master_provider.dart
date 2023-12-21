@@ -23,7 +23,7 @@ Future<List<OrderMasterState>> getOrderLogDisplay(
 @riverpod
 Future<List<OrderMasterState>> getOrderProcessing(
     GetOrderLogDisplayRef ref) async {
-  final list = await ref.refresh(getOrderLogDisplayProvider.future);
+  final list = await ref.watch(getOrderLogDisplayProvider.future);
 
   return list.where((element) => element.status == Status.processing).toList();
 }
@@ -31,7 +31,7 @@ Future<List<OrderMasterState>> getOrderProcessing(
 @riverpod
 Future<List<OrderMasterState>> getOrderCalling(
     GetOrderLogDisplayRef ref) async {
-  final list = await ref.refresh(getOrderLogDisplayProvider.future);
+  final list = await ref.watch(getOrderLogDisplayProvider.future);
 
   return list.where((element) => element.status == Status.calling).toList();
 }
