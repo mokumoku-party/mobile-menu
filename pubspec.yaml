@@ -1,18 +1,16 @@
 name: app
 description: Flutter project template.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   auto_size_text: ^3.0.0
   flutter:
-    sdk: flutter
-  flutter_web_plugins:
     sdk: flutter
   flutter_hooks: ^0.20.1
   flutter_riverpod: ^2.4.9
