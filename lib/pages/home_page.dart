@@ -495,7 +495,7 @@ class _Sidebar extends HookConsumerWidget {
     final isValidSecret = ref.watch(_validSecretMenuProvider);
 
     final controller =
-        useAnimationController(duration: Duration(milliseconds: 1000))
+        useAnimationController(duration: Duration(milliseconds: 5000))
           ..repeat();
 
     return Container(
