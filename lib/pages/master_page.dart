@@ -1,8 +1,10 @@
+// ignore_for_file: unused_result
 import 'dart:async';
 
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_master_provider.dart';
 import 'package:app/models/order_menu_state.dart';
+import 'package:app/models/order_provider.dart';
 import 'package:app/models/order_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -51,21 +53,45 @@ class _Order extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menuListState = ref.watch(getOrderMenuProvider);
+    final scheme = Theme.of(context).colorScheme;
 
     return menuListState.when(
       data: (menuList) {
         return Column(
           children: menuList
+              .where((e) => e.stock > 0)
               .map(
                 (e) => InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    ref.refresh(cocktailOrderProvider(e.id));
+                  },
                   child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        e.name,
-                        style: const TextStyle(fontSize: 32),
-                      ),
+                    child: Stack(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            e.name,
+                            style: const TextStyle(fontSize: 32),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: scheme.tertiary,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '${e.stock}',
+                              style: TextStyle(color: scheme.onTertiary),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
