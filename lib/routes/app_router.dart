@@ -1,4 +1,5 @@
 import 'package:app/pages/home_page.dart';
+import 'package:app/pages/order_display_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,6 +10,10 @@ final appRouterProvider = Provider(
         path: '/',
         builder: (context, state) => const HomePage(),
       ),
+      GoRoute(
+        path: '/display',
+        builder: (context, state) => const OrderDisplayPage(),
+      )
     ],
   ),
 );

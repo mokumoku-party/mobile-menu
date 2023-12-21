@@ -224,7 +224,6 @@ class OrderHistoryLog extends HookConsumerWidget {
             children: [
               if (orderHistory != dummy) ...[
                 Container(
-                  padding: EdgeInsets.only(bottom: 16),
                   child: Text(
                     "準備中",
                     style: TextStyle(
@@ -236,7 +235,7 @@ class OrderHistoryLog extends HookConsumerWidget {
                 OrderHistoryItem(orderHistory),
               ],
               Container(
-                padding: EdgeInsets.only(top: 16, bottom: 16),
+                padding: EdgeInsets.only(top: 16),
                 child: Text(
                   "完了",
                   style: TextStyle(
@@ -245,9 +244,18 @@ class OrderHistoryLog extends HookConsumerWidget {
                       color: Colors.white),
                 ),
               ),
-              ...data
-                  .where((e) => e != orderHistory)
-                  .map((e) => OrderHistoryItem(e)),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      children: data
+                          .where((e) => e != orderHistory)
+                          .map((e) => OrderHistoryItem(e))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         },
@@ -267,46 +275,49 @@ class OrderHistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Color(0x61FFF0D9),
-      ),
-      height: 80,
-      width: 288,
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            child: Container(
-              height: 70,
-              width: 64,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(orderHistory.imageUrl)),
+      padding: EdgeInsets.only(top: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Color(0x61FFF0D9),
+        ),
+        height: 80,
+        width: 288,
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              child: Container(
+                height: 70,
+                width: 64,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(orderHistory.imageUrl)),
+                ),
               ),
             ),
-          ),
-          Column(
-            children: [
-              Text(
-                orderHistory.name,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              ),
-              Text(
-                "注文番号：${orderHistory.orderId}",
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              )
-            ],
-          )
-        ],
+            Column(
+              children: [
+                Text(
+                  orderHistory.name,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                Text(
+                  "注文番号：${orderHistory.orderId}",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
