@@ -312,7 +312,7 @@ class _WaitingList extends HookConsumerWidget {
         return Column(
           children: [
             Text(
-              '注文数 ${state.length}',
+              '注文数 ${filteredState.length}',
               style: textTheme.titleLarge,
             ),
             Flexible(
