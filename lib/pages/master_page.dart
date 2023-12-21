@@ -169,46 +169,52 @@ class _Order extends HookConsumerWidget {
 
     return menuListState.when(
       data: (menuList) {
-        return Column(
-          children: menuList
-              .where((e) => e.stock > 0)
-              .map(
-                (e) => GestureDetector(
-                  onDoubleTap: () {
-                    ref.refresh(cocktailOrderProvider(e.id));
-                  },
-                  child: Card(
-                    child: Stack(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            e.name,
-                            style: const TextStyle(fontSize: 32),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
-                              color: scheme.tertiary,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+        return SingleChildScrollView(
+          child: Column(
+            children: menuList
+                .where((e) => e.stock > 0)
+                .map(
+                  (e) => GestureDetector(
+                    onDoubleTap: () {
+                      ref.refresh(cocktailOrderProvider(e.id));
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${e.name}を注文しました')));
+                    },
+                    child: Card(
+                      child: Stack(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(8),
                             child: Text(
-                              '${e.stock}',
-                              style: TextStyle(color: scheme.onTertiary),
+                              e.name,
+                              style: const TextStyle(fontSize: 32),
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                color: scheme.tertiary,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                '${e.stock}',
+                                style: TextStyle(color: scheme.onTertiary),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-              .toList(),
+                )
+                .toList(),
+          ),
         );
       },
       error: (_, __) => const Text('エラー'),
