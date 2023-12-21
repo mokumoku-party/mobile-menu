@@ -109,13 +109,18 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                                   color: Colors.white.withOpacity(.8),
                                 ),
                               ),
-                              Container(
+                              Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 28),
-                                child: Image(
+                                child: Container(
                                   width: 200,
                                   height: 200,
-                                  image: NetworkImage(orderMenu.imageUrl),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    image: DecorationImage(
+                                      image: NetworkImage(orderMenu.imageUrl),
+                                    ),
+                                  ),
                                 ),
                               ),
                               IconButton(

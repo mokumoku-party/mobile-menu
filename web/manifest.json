@@ -1,6 +1,6 @@
 {
-    "name": "flutter_template",
-    "short_name": "flutter_template",
+    "name": "mobile_menu",
+    "short_name": "mobile_menu",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

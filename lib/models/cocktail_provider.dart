@@ -24,9 +24,19 @@ Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
   var res = await http
       .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_menu"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
-  var OrderMenuList =
+  var orderMenuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
-  return Future.value(OrderMenuList);
+  return Future.value(orderMenuList);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<OrderMenu>> getSecretMenu(GetSecretMenuRef ref) async {
+  var res = await http
+      .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/secret_menu"));
+  var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
+  var menuList =
+      List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
+  return Future.value(menuList);
 }
 
 @riverpod
@@ -41,7 +51,7 @@ Future<OrderMenu> getOneOrderMenu(GetOneOrderMenuRef ref, int menuId) async {
 Future<List<Ingredient>> getIngredientList(GetIngredientListRef ref) async {
   var res = await http.get(
       Uri.parse("https://cocktailorder-1-l6047017.deta.app/ingredient/stock"));
-  var decodedRes = jsonDecode(res.body);
+  var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var ingredientList =
       List.from(decodedRes).map((e) => Ingredient.fromJson(e)).toList();
   return Future.value(ingredientList);

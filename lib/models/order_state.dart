@@ -10,14 +10,13 @@ class Order with _$Order {
     required String orderId,
     required String menuName,
     required Status status,
-
   }) = _Order;
 
-    factory Order.fromJson(Map<String, Object?> json)
-      => _$OrderFromJson(json);
+  factory Order.fromJson(Map<String, Object?> json) => _$OrderFromJson(json);
 }
 
 enum Status {
   processing,
   calling,
+  complete,
 }
