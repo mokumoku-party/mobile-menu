@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/order_history_state.dart';
@@ -36,9 +37,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state_2 = ref.watch(getSelfMenuProvider);
-    // state_2.when(data: (data) {print(data);}, error: (object,trace) {print("stack trace"); print(object);print(trace);}, loading: () {});
-
     final scrollAmount = ref.watch(scrollProvider);
 
     // TODO: ここにポーリング処理をかく
@@ -60,7 +58,14 @@ class HomePage extends HookConsumerWidget {
         if (res == "calling") {
           timer.cancel();
 
-          await showDialog(context: context, builder: (context) => Container());
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          var json = prefs.getString("nowOrderMenu") ?? "";
+          final orderHistory = OrderHistory.fromJson(jsonDecode(json));
+
+          await showDialog(
+            context: context,
+            builder: (context) => CompleteDialog(orderHistory: orderHistory),
+          );
           ref.read(orderNumProvider.notifier).state = 0;
 
           Future.microtask(() async {
@@ -81,6 +86,78 @@ class HomePage extends HookConsumerWidget {
       child: const Scaffold(
         backgroundColor: Colors.transparent,
         body: _Body(),
+      ),
+    );
+  }
+}
+
+class CompleteDialog extends HookConsumerWidget {
+  final orderHistory;
+
+  const CompleteDialog({
+    super.key,
+    required this.orderHistory,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.all(24),
+        child: SizedBox(
+          width: 300,
+          height: 451,
+          child: Column(
+            children: [
+              Text(
+                "できました",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFF404040),
+                    fontWeight: FontWeight.w400),
+              ),
+              Container(
+                padding: EdgeInsets.all(24),
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(orderHistory.imageUrl)),
+                  ),
+                ),
+              ),
+              Text(
+                "注文番号：${orderHistory.orderId}",
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Color(0xFF404040),
+                    fontWeight: FontWeight.w700),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 16, bottom: 24),
+                child: Text(
+                  orderHistory.name,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF404040)),
+                ),
+              ),
+              FilledButton(
+                  onPressed: () {
+                    ref.watch(
+                        notifyCompleteCocktailProvider(orderHistory.orderId));
+                    Navigator.of(context).pop();
+                  },
+                  style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xFF77C17A)),
+                  child: Text("受け取りを完了する"))
+            ],
+          ),
+        ),
       ),
     );
   }

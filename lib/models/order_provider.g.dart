@@ -170,7 +170,7 @@ final getOrderListProvider = FutureProvider<List<Order>>.internal(
 
 typedef GetOrderListRef = FutureProviderRef<List<Order>>;
 String _$notifyCompleteCocktailHash() =>
-    r'78611951e6105b6925ceb00d2d6fe577802c6e24';
+    r'ae564e5a67e57a078e690f0f8899123ab9d9fc86';
 
 /// See also [notifyCompleteCocktail].
 @ProviderFor(notifyCompleteCocktail)

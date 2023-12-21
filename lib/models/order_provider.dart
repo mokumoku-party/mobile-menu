@@ -32,8 +32,8 @@ Future<List<Order>> getOrderList(GetOrderListRef ref) async {
 @riverpod
 Future<String> notifyCompleteCocktail(
     NotifyCompleteCocktailRef ref, int orderId) async {
-  var res = await http.post(Uri.parse(
-      "https://cocktailorder-1-l6047017.deta.app/order_log/complete/$orderId"));
+  var res = await http.put(Uri.parse(
+      "https://cocktailorder-1-l6047017.deta.app/order_log/to_complete/$orderId"));
   if (res.statusCode == 422) {
     throw Exception(); //ここにエラー用のモデルを入れる
   }

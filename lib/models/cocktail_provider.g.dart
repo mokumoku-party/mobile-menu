@@ -6,7 +6,7 @@ part of 'cocktail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSelfMenuHash() => r'1268730b82a57a25055a5ac08a30cc989fa28162';
+String _$getSelfMenuHash() => r'57933d417d7f8826124c2ff834781c0755cfea57';
 
 /// See also [getSelfMenu].
 @ProviderFor(getSelfMenu)
@@ -20,7 +20,7 @@ final getSelfMenuProvider = FutureProvider<List<SelfMenu>>.internal(
 );
 
 typedef GetSelfMenuRef = FutureProviderRef<List<SelfMenu>>;
-String _$getOrderMenuHash() => r'6b003f8959b4687a4401b0fbccea863fbf041126';
+String _$getOrderMenuHash() => r'aaafa2d1a77bfb48cbf4ec2f6bd6565905021aef';
 
 /// See also [getOrderMenu].
 @ProviderFor(getOrderMenu)
@@ -34,7 +34,7 @@ final getOrderMenuProvider = FutureProvider<List<OrderMenu>>.internal(
 );
 
 typedef GetOrderMenuRef = FutureProviderRef<List<OrderMenu>>;
-String _$getSecretMenuHash() => r'06e47a803563abd604cb7ead3e991e99584548d3';
+String _$getSecretMenuHash() => r'f57423a1b180a3f08bfc8b5de020fc248fcfaa07';
 
 /// See also [getSecretMenu].
 @ProviderFor(getSecretMenu)
