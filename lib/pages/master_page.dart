@@ -331,7 +331,8 @@ class _WaitingList extends HookConsumerWidget {
       final timer = Timer.periodic(
         const Duration(seconds: 10),
         (timer) async {
-          final orderLog = await ref.refresh(getOrderProcessingProvider.future);
+          await ref.refresh(getOrderLogDisplayProvider.future);
+          final orderLog = await ref.read(getOrderProcessingProvider.future);
 
           if (!orderLog.contains(ref.read(_selectedProvider))) {
             ref.read(_selectedProvider.notifier).state = null;
