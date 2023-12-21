@@ -49,6 +49,17 @@ Future<List<OrderMenu>> getSecretMenu(GetSecretMenuRef ref) async {
 }
 
 @riverpod
+Future<List<OrderMenu>> getAllOrder(GetAllOrderRef ref) async {
+  final orderMenuList = await ref.read(getOrderMenuProvider.future);
+  final secretMenuList = await ref.read(getSecretMenuProvider.future);
+
+  return Future.value([
+    ...orderMenuList,
+    ...secretMenuList,
+  ]);
+}
+
+@riverpod
 Future<OrderMenu> getOneOrderMenu(GetOneOrderMenuRef ref, int menuId) async {
   var res = await http.get(Uri.parse(
       "https://cocktailorder-1-l6047017.deta.app/order_menu/$menuId"));

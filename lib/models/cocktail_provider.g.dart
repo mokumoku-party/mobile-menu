@@ -49,6 +49,20 @@ final getSecretMenuProvider = FutureProvider<List<OrderMenu>>.internal(
 );
 
 typedef GetSecretMenuRef = FutureProviderRef<List<OrderMenu>>;
+String _$getAllOrderHash() => r'd5640748e33713579df607bd06dd521f42097e6b';
+
+/// See also [getAllOrder].
+@ProviderFor(getAllOrder)
+final getAllOrderProvider = AutoDisposeFutureProvider<List<OrderMenu>>.internal(
+  getAllOrder,
+  name: r'getAllOrderProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$getAllOrderHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetAllOrderRef = AutoDisposeFutureProviderRef<List<OrderMenu>>;
 String _$getOneOrderMenuHash() => r'ead4ad6ca74e2de073b92975b31fad20a1eb73cc';
 
 /// Copied from Dart SDK

@@ -155,13 +155,13 @@ class _Order extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final menuListState = ref.watch(getOrderMenuProvider);
+    final menuListState = ref.watch(getAllOrderProvider);
     final scheme = Theme.of(context).colorScheme;
 
     useEffect(() {
       final timer = Timer.periodic(
         const Duration(seconds: 10),
-        (timer) => ref.invalidate(getOrderMenuProvider),
+        (timer) => ref.invalidate(getAllOrderProvider),
       );
 
       return timer.cancel;
@@ -230,7 +230,7 @@ class _Recipe extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final menuListState = ref.watch(getOrderMenuProvider);
+    final menuListState = ref.watch(getAllOrderProvider);
     final selected = ref.watch(_selectedProvider);
 
     final scheme = Theme.of(context).colorScheme;
