@@ -63,9 +63,9 @@ class MasterPage extends HookConsumerWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16),
-                          child: Text('レシピ', style: textTheme.displayLarge),
+                          child: Text('在庫', style: textTheme.displayLarge),
                         ),
-                        const Flexible(child: _Recipe()),
+                        const Flexible(child: _Zaiko()),
                       ],
                     ),
                   ),
@@ -88,6 +88,43 @@ class MasterPage extends HookConsumerWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _Zaiko extends HookConsumerWidget {
+  const _Zaiko({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ingredientsState = ref.watch(getIngredientListProvider);
+
+    return ingredientsState.when(
+      data: (ingredients) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: ListView.builder(
+            itemCount: ingredients.length,
+            itemBuilder: (context, index) {
+              final ingredient = ingredients[index];
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(ingredient.name),
+                  Text('${ingredient.amount} [${ingredient.unit}]'),
+                ],
+              );
+            },
+          ),
+        );
+      },
+      error: (_, __) => const Text('エラー'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
