@@ -45,11 +45,30 @@ class MasterPage extends HookConsumerWidget {
               width: width * .33,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text('レシピ', style: textTheme.displayLarge),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text('レシピ', style: textTheme.displayLarge),
+                        ),
+                        const Flexible(child: _Recipe()),
+                      ],
+                    ),
                   ),
-                  const Flexible(child: _Recipe()),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text('レシピ', style: textTheme.displayLarge),
+                        ),
+                        const Flexible(child: _Recipe()),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -229,7 +248,19 @@ class _WaitingList extends HookConsumerWidget {
     useEffect(() {
       final timer = Timer.periodic(
         const Duration(seconds: 10),
-        (timer) => ref.invalidate(getOrderLogDisplayProvider),
+        (timer) async {
+          final orderLog = await ref.refresh(getOrderLogDisplayProvider.future);
+
+          if (!orderLog.contains(ref.read(_selectedProvider))) {
+            ref.read(_selectedProvider.notifier).state = null;
+          }
+
+          final selected = ref.read(_selectedProvider);
+
+          if (selected == null && orderLog.isNotEmpty) {
+            ref.read(_selectedProvider.notifier).state = orderLog.first;
+          }
+        },
       );
 
       return timer.cancel;
