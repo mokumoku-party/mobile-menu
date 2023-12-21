@@ -80,10 +80,11 @@ class _Editor extends HookConsumerWidget {
         ),
         ElevatedButton(
           onPressed: () async {
+            final sign = isMinus.value ? 1 : -1;
             final ingredient = manual.Ingredient(
               ingredientId: selected.id,
               unit: selected.unit,
-              amount: double.parse(controller.text),
+              amount: sign * double.parse(controller.text),
             );
 
             await ref.read(postManualOrderProvider(

@@ -115,6 +115,15 @@ class _Zaiko extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ingredientsState = ref.watch(getIngredientListProvider);
 
+    useEffect(() {
+      final timer = Timer.periodic(
+        const Duration(seconds: 10),
+        (timer) => ref.invalidate(getIngredientListProvider),
+      );
+
+      return timer.cancel;
+    }, const []);
+
     return ingredientsState.when(
       data: (ingredients) {
         return Container(
