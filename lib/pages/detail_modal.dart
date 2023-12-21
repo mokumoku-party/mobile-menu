@@ -238,6 +238,8 @@ class OrderMenuDetailModal extends HookConsumerWidget {
 
                                   orderHistoryList
                                       .add(jsonEncode(orderHistory.toJson()));
+                                  prefs.setInt(
+                                      "nowOrderId", orderHistory.orderId);
 
                                   prefs.setStringList(
                                       "orderHistory", orderHistoryList);

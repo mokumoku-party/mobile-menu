@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rainbow_color/rainbow_color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sidebarProvider = StateProvider((ref) => SidebarType.cocktail);
 final orderButtonProvider = StateProvider((ref) => OrderButtonType.before);
@@ -44,6 +45,11 @@ class HomePage extends HookConsumerWidget {
     final orderId = ref.watch(orderNumProvider);
 
     useEffect(() {
+      Future.microtask(() async {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        var orderId = prefs.getInt("nowOrderId") ?? 0;
+        ref.read(orderNumProvider.notifier).state = orderId;
+      });
       if (orderId == 0) {
         return () {};
       }
@@ -56,6 +62,12 @@ class HomePage extends HookConsumerWidget {
 
           await showDialog(context: context, builder: (context) => Container());
           ref.read(orderNumProvider.notifier).state = 0;
+
+          Future.microtask(() async {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.setInt("nowOrderId", 0);
+          });
         }
       });
 
