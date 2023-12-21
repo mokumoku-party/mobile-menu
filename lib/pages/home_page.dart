@@ -74,9 +74,7 @@ class HomePage extends HookConsumerWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({
-    super.key,
-  });
+  const _Body();
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +115,7 @@ class _Body extends StatelessWidget {
 }
 
 class _MainContent extends HookConsumerWidget {
-  const _MainContent({
-    super.key,
-  });
+  const _MainContent();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,41 +132,15 @@ class _MainContent extends HookConsumerWidget {
 }
 
 class _OrderMenuList extends HookConsumerWidget {
-  const _OrderMenuList({
-    super.key,
-  });
+  const _OrderMenuList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderMenuState = ref.watch(getOrderMenuProvider);
 
-    return SingleChildScrollView(
-      child: Center(
-          child: orderMenuState.when(
-        data: (menuList) => Wrap(
-          direction: Axis.horizontal,
-          alignment: WrapAlignment.start,
-          spacing: 8,
-          runSpacing: 8,
-          children: menuList.map((e) => OrderMenuItem(e)).toList(),
-        ),
-        error: (e, _) => throw e,
-        loading: () => CircularProgressIndicator(),
-      )),
-    );
-  }
-}
+    final height = MediaQuery.of(context).size.height;
 
-class _SelfMenuList extends HookConsumerWidget {
-  const _SelfMenuList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     final controller = useScrollController();
-    final selfMenuState = ref.watch(getSelfMenuProvider);
-
     useEffect(() {
       listener() {
         final amount = controller.offset / controller.position.maxScrollExtent;
@@ -184,6 +154,42 @@ class _SelfMenuList extends HookConsumerWidget {
 
     return SingleChildScrollView(
       controller: controller,
+      child: Center(
+          child: orderMenuState.when(
+        data: (menuList) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.start,
+                spacing: 8,
+                runSpacing: 8,
+                children: menuList.map((e) => OrderMenuItem(e)).toList(),
+              ),
+            ),
+            SizedBox(height: height),
+            Container(
+              padding: EdgeInsets.all(8),
+              child: FilledButton(onPressed: () {}, child: Text('裏メニューを表示')),
+            ),
+          ],
+        ),
+        error: (e, _) => throw e,
+        loading: () => CircularProgressIndicator(),
+      )),
+    );
+  }
+}
+
+class _SelfMenuList extends HookConsumerWidget {
+  const _SelfMenuList();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selfMenuState = ref.watch(getSelfMenuProvider);
+
+    return SingleChildScrollView(
       child: Center(
         child: selfMenuState.when(
           data: (menuList) {
@@ -422,9 +428,7 @@ class MenuItem extends StatelessWidget {
 }
 
 class _Sidebar extends HookConsumerWidget {
-  const _Sidebar({
-    super.key,
-  });
+  const _Sidebar();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
