@@ -3,6 +3,7 @@ import 'package:app/models/cocktail_provider.dart';
 import 'package:app/models/ingredient_state.dart';
 import 'package:app/models/manual_ingredient.dart' as manual;
 import 'package:app/models/order_master_provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -136,9 +137,11 @@ class _Zaiko extends HookConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        ingredient.name,
-                        style: const TextStyle(fontSize: 32),
+                      Flexible(
+                        child: AutoSizeText(
+                          ingredient.name,
+                          style: const TextStyle(fontSize: 32),
+                        ),
                       ),
                       Text(
                         '${ingredient.amount} [${ingredient.unit}]',
