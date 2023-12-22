@@ -38,8 +38,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollAmount = ref.watch(scrollProvider);
-
     // TODO: ここにポーリング処理をかく
     final orderId = ref.watch(orderNumProvider);
 
@@ -82,11 +80,35 @@ class HomePage extends HookConsumerWidget {
       };
     }, [orderId]);
 
-    return Container(
-      color: rb[1 - scrollAmount],
-      child: const Scaffold(
-        backgroundColor: Colors.transparent,
-        body: _Body(),
+    return Stack(
+      children: const [
+        _RainbowFilter(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: _Body(),
+        ),
+      ],
+    );
+  }
+}
+
+class _RainbowFilter extends HookConsumerWidget {
+  const _RainbowFilter();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollAmount = ref.watch(scrollProvider);
+
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(rb[1 - scrollAmount], BlendMode.screen),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/background.png'),
+          ),
+        ),
       ),
     );
   }
@@ -223,9 +245,7 @@ class _Body extends StatelessWidget {
 }
 
 class _OrderDisplay extends ConsumerWidget {
-  const _OrderDisplay({
-    super.key,
-  });
+  const _OrderDisplay();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -348,7 +368,7 @@ class _OrderMenuList extends HookConsumerWidget {
                 onPressed: () {
                   ref.read(_validSecretMenuProvider.notifier).state = true;
                 },
-                child: Text('裏メニューを表示'),
+                child: Text('裏メニューを開放'),
               ),
             ),
           ],
@@ -477,8 +497,9 @@ class OrderHistoryItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(orderHistory.imageUrl)),
+                    fit: BoxFit.fitHeight,
+                    image: NetworkImage(orderHistory.imageUrl),
+                  ),
                 ),
               ),
             ),
@@ -545,74 +566,82 @@ class MenuItem extends StatelessWidget {
     };
 
     return Container(
+      width: 136,
+      height: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white.withOpacity(.2),
         border: Border.all(width: 1, color: Colors.white.withOpacity(.05)),
       ),
       padding: EdgeInsets.all(12),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SizedBox(
-          width: 112,
-          height: 112,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl),
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  padding:
-                      EdgeInsets.only(right: 8, left: 4, top: 2, bottom: 2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 112,
+            height: 112,
+            child: Stack(
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        topRight: Radius.circular(16)),
-                    color: badgeColor,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.local_bar,
-                        size: 12,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        '$alcPercent%',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ],
+                    image: DecorationImage(
+                      image: NetworkImage(imageUrl),
+                    ),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    padding:
+                        EdgeInsets.only(right: 8, left: 4, top: 2, bottom: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          topRight: Radius.circular(16)),
+                      color: badgeColor,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.local_bar,
+                          size: 12,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 2),
+                        Text(
+                          '$alcPercent%',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 8),
-          width: 136,
-          child: Flexible(
-            child: AutoSizeText(name,
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.only(top: 8),
+              child: AutoSizeText(
+                name,
+                maxLines: 2,
+                minFontSize: 10,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
                   fontWeight: FontWeight.w700,
-                )),
+                ),
+              ),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
