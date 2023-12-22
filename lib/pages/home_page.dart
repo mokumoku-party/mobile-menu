@@ -38,8 +38,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollAmount = ref.watch(scrollProvider);
-
     // TODO: ここにポーリング処理をかく
     final orderId = ref.watch(orderNumProvider);
 
@@ -83,24 +81,35 @@ class HomePage extends HookConsumerWidget {
     }, [orderId]);
 
     return Stack(
-      children: [
-        ColorFiltered(
-          colorFilter: ColorFilter.mode(rb[1 - scrollAmount], BlendMode.screen),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/background.png'),
-              ),
-            ),
-          ),
-        ),
-        const Scaffold(
+      children: const [
+        _RainbowFilter(),
+        Scaffold(
           backgroundColor: Colors.transparent,
           body: _Body(),
         ),
       ],
+    );
+  }
+}
+
+class _RainbowFilter extends HookConsumerWidget {
+  const _RainbowFilter();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollAmount = ref.watch(scrollProvider);
+
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(rb[1 - scrollAmount], BlendMode.screen),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/background.png'),
+          ),
+        ),
+      ),
     );
   }
 }
