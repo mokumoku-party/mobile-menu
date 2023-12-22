@@ -131,12 +131,16 @@ class _Zaiko extends HookConsumerWidget {
             itemBuilder: (context, index) {
               final ingredient = ingredients[index];
 
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(ingredient.name),
-                  Text('${ingredient.amount} [${ingredient.unit}]'),
-                ],
+              return Container(
+                constraints: const BoxConstraints(maxHeight: 80),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(ingredient.name),
+                    Text('${ingredient.amount} [${ingredient.unit}]'),
+                  ],
+                ),
               );
             },
           ),
