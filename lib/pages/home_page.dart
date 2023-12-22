@@ -91,7 +91,7 @@ class HomePage extends HookConsumerWidget {
               color: Colors.transparent,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('background.png'),
+                image: AssetImage('assets/background.png'),
               ),
             ),
           ),
