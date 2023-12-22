@@ -731,17 +731,18 @@ class SidebarButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEnable = ref.watch(sidebarProvider) == type;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        constraints: BoxConstraints(minHeight: 80),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: onTap,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Container(
+          constraints: BoxConstraints(minHeight: 80),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Align(
+                alignment: Alignment.center,
                 child: RotatedBox(
                   quarterTurns: 3,
                   child: Text(
@@ -751,21 +752,21 @@ class SidebarButton extends HookConsumerWidget {
                   ),
                 ),
               ),
-            ),
-            if (isEnable)
-              Positioned(
-                top: 0,
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 4,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: Colors.white,
+              if (isEnable)
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              )
-          ],
+                )
+            ],
+          ),
         ),
       ),
     );
