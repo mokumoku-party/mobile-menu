@@ -12,7 +12,7 @@ class OrderMenu with _$OrderMenu {
     required int id,
     required String name,
     required String description,
-    required String imageUrl,
+    String? imageUrl,
     required Method method,
     required Style style,
     required List<String> specials,

@@ -11,7 +11,7 @@ _$OrderMenuImpl _$$OrderMenuImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String,
-      imageUrl: json['image_url'] as String,
+      imageUrl: json['image_url'] as String?,
       method: $enumDecode(_$MethodEnumMap, json['method']),
       style: $enumDecode(_$StyleEnumMap, json['style']),
       specials:

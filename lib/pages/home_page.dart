@@ -553,7 +553,7 @@ class MenuItem extends StatelessWidget {
   const MenuItem(this.name, this.imageUrl, this.alcPercent, {super.key});
 
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
   final int alcPercent;
 
   @override
@@ -583,14 +583,16 @@ class MenuItem extends StatelessWidget {
             height: 112,
             child: Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(imageUrl),
+                if (imageUrl != null)
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(imageUrl!),
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
+                if (imageUrl == null) Text('画像なし'),
                 Align(
                   alignment: Alignment.topRight,
                   child: Container(

@@ -98,15 +98,21 @@ class OrderMenuDetailModal extends HookConsumerWidget {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 28),
-                                child: Container(
+                                child: SizedBox(
                                   width: 200,
                                   height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    image: DecorationImage(
-                                      image: NetworkImage(orderMenu.imageUrl),
-                                    ),
-                                  ),
+                                  child: (orderMenu.imageUrl != null)
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  orderMenu.imageUrl!),
+                                            ),
+                                          ),
+                                        )
+                                      : const Text('画像なし'),
                                 ),
                               ),
                               IconButton(
@@ -265,7 +271,7 @@ class _OrderButton extends HookConsumerWidget {
                     prefs.getStringList("orderHistory") ?? [];
 
                 var orderHistory = OrderHistory(
-                    orderId: res, name: menu.name, imageUrl: menu.imageUrl);
+                    orderId: res, name: menu.name, imageUrl: menu.imageUrl!);
 
                 orderHistoryList.add(jsonEncode(orderHistory.toJson()));
                 prefs.setInt("nowOrderId", orderHistory.orderId);

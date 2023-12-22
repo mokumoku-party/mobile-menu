@@ -23,7 +23,7 @@ mixin _$OrderMenu {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   Method get method => throw _privateConstructorUsedError;
   Style get style => throw _privateConstructorUsedError;
   List<String> get specials => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $OrderMenuCopyWith<$Res> {
       {int id,
       String name,
       String description,
-      String imageUrl,
+      String? imageUrl,
       Method method,
       Style style,
       List<String> specials,
@@ -71,7 +71,7 @@ class _$OrderMenuCopyWithImpl<$Res, $Val extends OrderMenu>
     Object? id = null,
     Object? name = null,
     Object? description = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? method = null,
     Object? style = null,
     Object? specials = null,
@@ -92,10 +92,10 @@ class _$OrderMenuCopyWithImpl<$Res, $Val extends OrderMenu>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: null == imageUrl
+      imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       method: null == method
           ? _value.method
           : method // ignore: cast_nullable_to_non_nullable
@@ -136,7 +136,7 @@ abstract class _$$OrderMenuImplCopyWith<$Res>
       {int id,
       String name,
       String description,
-      String imageUrl,
+      String? imageUrl,
       Method method,
       Style style,
       List<String> specials,
@@ -159,7 +159,7 @@ class __$$OrderMenuImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? description = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? method = null,
     Object? style = null,
     Object? specials = null,
@@ -180,10 +180,10 @@ class __$$OrderMenuImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: null == imageUrl
+      imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       method: null == method
           ? _value.method
           : method // ignore: cast_nullable_to_non_nullable
@@ -220,7 +220,7 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
       {required this.id,
       required this.name,
       required this.description,
-      required this.imageUrl,
+      this.imageUrl,
       required this.method,
       required this.style,
       required final List<String> specials,
@@ -240,7 +240,7 @@ class _$OrderMenuImpl with DiagnosticableTreeMixin implements _OrderMenu {
   @override
   final String description;
   @override
-  final String imageUrl;
+  final String? imageUrl;
   @override
   final Method method;
   @override
@@ -343,7 +343,7 @@ abstract class _OrderMenu implements OrderMenu {
       {required final int id,
       required final String name,
       required final String description,
-      required final String imageUrl,
+      final String? imageUrl,
       required final Method method,
       required final Style style,
       required final List<String> specials,
@@ -361,7 +361,7 @@ abstract class _OrderMenu implements OrderMenu {
   @override
   String get description;
   @override
-  String get imageUrl;
+  String? get imageUrl;
   @override
   Method get method;
   @override
