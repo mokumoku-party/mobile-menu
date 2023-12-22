@@ -82,12 +82,25 @@ class HomePage extends HookConsumerWidget {
       };
     }, [orderId]);
 
-    return Container(
-      color: rb[1 - scrollAmount],
-      child: const Scaffold(
-        backgroundColor: Colors.transparent,
-        body: _Body(),
-      ),
+    return Stack(
+      children: [
+        ColorFiltered(
+          colorFilter: ColorFilter.mode(rb[1 - scrollAmount], BlendMode.screen),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('background.png'),
+              ),
+            ),
+          ),
+        ),
+        const Scaffold(
+          backgroundColor: Colors.transparent,
+          body: _Body(),
+        ),
+      ],
     );
   }
 }
@@ -346,7 +359,7 @@ class _OrderMenuList extends HookConsumerWidget {
                 onPressed: () {
                   ref.read(_validSecretMenuProvider.notifier).state = true;
                 },
-                child: Text('裏メニューを表示'),
+                child: Text('裏メニューを開放'),
               ),
             ),
           ],
@@ -475,8 +488,9 @@ class OrderHistoryItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(orderHistory.imageUrl)),
+                    fit: BoxFit.fitHeight,
+                    image: NetworkImage(orderHistory.imageUrl),
+                  ),
                 ),
               ),
             ),
