@@ -27,23 +27,21 @@ class OrderDisplayPage extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(176, 37, 45, 66),
-      body: Flexible(
-        child: Row(
-          children: [
-            displayListBox("作成中", processingList),
-            displayListBox("お呼び出し中", callingList),
-          ],
-        ),
+      body: Row(
+        children: [
+          Flexible(child: DisplayListBox("作成中", processingList)),
+          Flexible(child: DisplayListBox("お呼び出し中", callingList)),
+        ],
       ),
     );
   }
 }
 
-class displayListBox extends HookConsumerWidget {
+class DisplayListBox extends HookConsumerWidget {
   final title;
   final AsyncValue<List<OrderMasterState>> list;
 
-  const displayListBox(
+  const DisplayListBox(
     this.title,
     this.list, {
     super.key,
@@ -60,26 +58,30 @@ class displayListBox extends HookConsumerWidget {
         ),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width / 2 - 48,
-        child: Column(children: [
-          Text(
-            title,
-            style: const TextStyle(
-                fontSize: 48, fontWeight: FontWeight.w700, color: Colors.white),
-          ),
-          ...list.when(data: (data) {
-            return data.map((e) => Text(
-                  "注文番号：${e.orderId}",
-                  style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ));
-          }, error: (_, __) {
-            return [const SizedBox.shrink()];
-          }, loading: () {
-            return [const SizedBox.shrink()];
-          })
-        ]),
+        child: ListView(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+            ),
+            ...list.when(data: (data) {
+              return data.map((e) => Text(
+                    "注文番号：${e.orderId}",
+                    style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  ));
+            }, error: (_, __) {
+              return [const SizedBox.shrink()];
+            }, loading: () {
+              return [const SizedBox.shrink()];
+            })
+          ],
+        ),
       ),
     );
   }
