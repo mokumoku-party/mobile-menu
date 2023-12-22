@@ -280,25 +280,24 @@ class _Recipe extends HookConsumerWidget {
                 child: ListView(
                   children: menu.ingredients
                       .map(
-                        (ingredient) => Flexible(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: AutoSizeText(
-                                  ingredient.name,
-                                  style: const TextStyle(fontSize: 24),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Text(
-                                (ingredient.unit == 'any')
-                                    ? '適量'
-                                    : '${ingredient.amount} [${ingredient.unit}]',
+                        (ingredient) => Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: AutoSizeText(
+                                ingredient.name,
                                 style: const TextStyle(fontSize: 24),
+                                maxLines: 1,
                               ),
-                            ],
-                          ),
+                            ),
+                            Text(
+                              (ingredient.unit == 'any')
+                                  ? '適量'
+                                  : '${ingredient.amount} [${ingredient.unit}]',
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                          ],
                         ),
                       )
                       .toList(),
