@@ -7,6 +7,7 @@ import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:app/pages/detail_modal.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -601,13 +602,14 @@ class MenuItem extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            name,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-            ),
+          width: 136,
+          child: Flexible(
+            child: AutoSizeText(name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                )),
           ),
         ),
       ]),
