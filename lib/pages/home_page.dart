@@ -7,6 +7,7 @@ import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/order_provider.dart';
 import 'package:app/pages/detail_modal.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -222,9 +223,7 @@ class _Body extends StatelessWidget {
 }
 
 class _OrderDisplay extends ConsumerWidget {
-  const _OrderDisplay({
-    super.key,
-  });
+  const _OrderDisplay();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -544,73 +543,82 @@ class MenuItem extends StatelessWidget {
     };
 
     return Container(
+      width: 136,
+      height: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Colors.white.withOpacity(.2),
         border: Border.all(width: 1, color: Colors.white.withOpacity(.05)),
       ),
       padding: EdgeInsets.all(12),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SizedBox(
-          width: 112,
-          height: 112,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl),
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  padding:
-                      EdgeInsets.only(right: 8, left: 4, top: 2, bottom: 2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 112,
+            height: 112,
+            child: Stack(
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        topRight: Radius.circular(16)),
-                    color: badgeColor,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.local_bar,
-                        size: 12,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        '$alcPercent%',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ],
+                    image: DecorationImage(
+                      image: NetworkImage(imageUrl),
+                    ),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            name,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    padding:
+                        EdgeInsets.only(right: 8, left: 4, top: 2, bottom: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          topRight: Radius.circular(16)),
+                      color: badgeColor,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.local_bar,
+                          size: 12,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 2),
+                        Text(
+                          '$alcPercent%',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ]),
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.only(top: 8),
+              child: AutoSizeText(
+                name,
+                maxLines: 2,
+                minFontSize: 10,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
