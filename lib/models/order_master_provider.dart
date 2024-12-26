@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/conf.dart';
 import 'package:app/models/manual_ingredient.dart';
 import 'package:app/models/order_master_state.dart';
 import 'package:app/models/order_state.dart';
@@ -11,8 +12,7 @@ part 'order_master_provider.g.dart';
 @riverpod
 Future<List<OrderMasterState>> getOrderLogDisplay(
     GetOrderLogDisplayRef ref) async {
-  var res = await http.get(
-      Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_log/display"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_log/display"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   final list =
       List.from(decodedRes).map((e) => OrderMasterState.fromJson(e)).toList();
@@ -39,15 +39,14 @@ Future<List<OrderMasterState>> getOrderCalling(
 @riverpod
 Future<void> putOrderLogToCalling(PutOrderLogToCallingRef ref, int id) =>
     http.put(
-      Uri.parse(
-          "https://cocktailorder-1-l6047017.deta.app/order_log/to_calling/$id"),
+      Uri.parse("$apiBaseUrl/order_log/to_calling/$id"),
     );
 
 @riverpod
 Future<void> postManualOrder(
     PostManualOrderRef ref, Ingredients ingredients) async {
   final res = await http.post(
-    Uri.parse("https://cocktailorder-1-l6047017.deta.app/manual_order"),
+    Uri.parse("$apiBaseUrl/manual_order"),
     headers: {
       'accept': 'application/json',
       'Content-Type': 'application/json',

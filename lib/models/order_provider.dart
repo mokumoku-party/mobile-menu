@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/conf.dart';
 import 'package:app/models/order_history_state.dart';
 import 'package:app/models/order_state.dart';
 import 'package:http/http.dart' as http;
@@ -10,8 +11,7 @@ part 'order_provider.g.dart';
 
 @riverpod
 Future<int> cocktailOrder(CocktailOrderRef ref, int menuId) async {
-  var res = await http.post(
-      Uri.parse("https://cocktailorder-1-l6047017.deta.app/order/$menuId"));
+  var res = await http.post(Uri.parse("$apiBaseUrl/order/$menuId"));
   if (res.statusCode == 422) {
     throw Exception(); //ここにエラー用のモデルを入れる
   }
@@ -22,8 +22,7 @@ Future<int> cocktailOrder(CocktailOrderRef ref, int menuId) async {
 
 @Riverpod(keepAlive: true)
 Future<List<Order>> getOrderList(GetOrderListRef ref) async {
-  var res = await http.get(
-      Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_log/display"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_log/display"));
   var decodedRes = jsonDecode(res.body);
   var orderList = List.from(decodedRes).map((e) => Order.fromJson(e)).toList();
   return Future.value(orderList);
@@ -32,8 +31,8 @@ Future<List<Order>> getOrderList(GetOrderListRef ref) async {
 @riverpod
 Future<String> notifyCompleteCocktail(
     NotifyCompleteCocktailRef ref, int orderId) async {
-  var res = await http.put(Uri.parse(
-      "https://cocktailorder-1-l6047017.deta.app/order_log/to_complete/$orderId"));
+  var res =
+      await http.put(Uri.parse("$apiBaseUrl/order_log/to_complete/$orderId"));
   if (res.statusCode == 422) {
     throw Exception(); //ここにエラー用のモデルを入れる
   }
@@ -44,8 +43,7 @@ Future<String> notifyCompleteCocktail(
 
 @riverpod
 Future<String> getOrderState(GetOrderStateRef ref, int orderId) async {
-  var res = await http.get(Uri.parse(
-      "https://cocktailorder-1-l6047017.deta.app/order_log/status/$orderId"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_log/status/$orderId"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   return Future.value(decodedRes["status"]);
 }
