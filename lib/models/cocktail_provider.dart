@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/conf.dart';
 import 'package:app/models/ingredient_state.dart';
 import 'package:app/models/order_menu_state.dart';
 import 'package:app/models/self_menu_state.dart';
@@ -10,8 +11,7 @@ part 'cocktail_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
-  var res = await http
-      .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/self_menu"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/self_menu"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var selfMenuList =
       List.from(decodedRes).map((e) => SelfMenu.fromJson(e)).toList();
@@ -24,8 +24,7 @@ Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
 
 @Riverpod(keepAlive: true)
 Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
-  var res = await http
-      .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/order_menu"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_menu"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var orderMenuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
@@ -37,8 +36,7 @@ Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
 
 @Riverpod(keepAlive: true)
 Future<List<OrderMenu>> getSecretMenu(GetSecretMenuRef ref) async {
-  var res = await http
-      .get(Uri.parse("https://cocktailorder-1-l6047017.deta.app/secret_menu"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/secret_menu"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var menuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
@@ -61,16 +59,14 @@ Future<List<OrderMenu>> getAllOrder(GetAllOrderRef ref) async {
 
 @riverpod
 Future<OrderMenu> getOneOrderMenu(GetOneOrderMenuRef ref, int menuId) async {
-  var res = await http.get(Uri.parse(
-      "https://cocktailorder-1-l6047017.deta.app/order_menu/$menuId"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_menu/$menuId"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   return Future.value(OrderMenu.fromJson(decodedRes));
 }
 
 @riverpod
 Future<List<Ingredient>> getIngredientList(GetIngredientListRef ref) async {
-  var res = await http.get(
-      Uri.parse("https://cocktailorder-1-l6047017.deta.app/ingredient/stock"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/ingredient/stock"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var ingredientList =
       List.from(decodedRes).map((e) => Ingredient.fromJson(e)).toList();
