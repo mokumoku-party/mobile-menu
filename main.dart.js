@@ -7460,7 +7460,7 @@ while(true)switch(s){case 0:m=A
 l=B.a6
 k=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/self_menu")),$async$avx)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/self_menu")),$async$avx)
 case 3:p=m.f9(l.i0(0,k.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,dT>")
 n=A.a_(new A.a1(p,new A.avy(),o),!0,o.h("am.E"))
@@ -7477,7 +7477,7 @@ while(true)switch(s){case 0:m=A
 l=B.a6
 k=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/menu")),$async$avo)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/menu")),$async$avo)
 case 3:p=m.f9(l.i0(0,k.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,aV>")
 n=A.a_(new A.a1(p,new A.avp(),o),!0,o.h("am.E"))
@@ -7494,7 +7494,7 @@ while(true)switch(s){case 0:m=A
 l=B.a6
 k=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/secret_menu")),$async$avu)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/secret_menu")),$async$avu)
 case 3:p=m.f9(l.i0(0,k.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,aV>")
 n=A.a_(new A.a1(p,new A.avv(),o),!0,o.h("am.E"))
@@ -7528,7 +7528,7 @@ o=A
 n=B.a6
 m=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order_menu/"+b)),$async$avh)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/order_menu/"+b)),$async$avh)
 case 3:q=p.bW(o.ayH(n.i0(0,m.d8(0,d.w),null)),t.Mo)
 s=1
 break
@@ -7541,7 +7541,7 @@ while(true)switch(s){case 0:n=A
 m=B.a6
 l=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/ingredient/stock")),$async$avf)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/ingredient/stock")),$async$avf)
 case 3:p=n.f9(m.i0(0,l.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,d9>")
 q=A.bW(A.a_(new A.a1(p,new A.avg(),o),!0,o.h("am.E")),t.Kl)
@@ -7624,7 +7624,7 @@ while(true)switch(s){case 0:n=A
 m=B.a6
 l=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order_log/display")),$async$avm)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/order_log/display")),$async$avm)
 case 3:p=n.f9(m.i0(0,l.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,dD>")
 q=A.bW(A.a_(new A.a1(p,new A.avn(),o),!0,o.h("am.E")),t.Nb)
@@ -7658,7 +7658,7 @@ case 1:return A.L(q,r)}})
 return A.M($async$avi,r)},
 avX(a,b){var s=0,r=A.N(t.H),q,p,o,n,m,l,k,j,i,h
 var $async$avX=A.O(function(c,d){if(c===1)return A.K(d,r)
-while(true)switch(s){case 0:p=A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/manual_order")
+while(true)switch(s){case 0:p=A.cr("https://cocktail-order-server-2024.fly.dev/manual_order")
 o=t.N
 n=A.au(["accept","application/json","Content-Type","application/json"],o,o)
 m=a
@@ -7782,7 +7782,7 @@ YM:function YM(){},
 auX(a,b){var s=0,r=A.N(t.S),q,p
 var $async$auX=A.O(function(c,d){if(c===1)return A.K(d,r)
 while(true)switch(s){case 0:s=3
-return A.P(A.aHZ(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order/"+b),null,null),$async$auX)
+return A.P(A.aHZ(A.cr("https://cocktail-order-server-2024.fly.dev/order/"+b),null,null),$async$auX)
 case 3:p=d
 if(p.b===422)throw A.d(A.ez(null))
 q=A.bW(A.cL(J.b3(B.a6.i0(0,A.aHu(J.b3(A.aGs(p.e).c.a,"charset")).d8(0,p.w),null),"order_id"),null),t.S)
@@ -7793,7 +7793,7 @@ return A.M($async$auX,r)},
 avT(a,b){var s=0,r=A.N(t.N),q,p
 var $async$avT=A.O(function(c,d){if(c===1)return A.K(d,r)
 while(true)switch(s){case 0:s=3
-return A.P(A.aI1(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order_log/to_complete/"+b)),$async$avT)
+return A.P(A.aI1(A.cr("https://cocktail-order-server-2024.fly.dev/order_log/to_complete/"+b)),$async$avT)
 case 3:p=d
 if(p.b===422)throw A.d(A.ez(null))
 q=A.bW(J.b3(B.a6.i0(0,A.aHu(J.b3(A.aGs(p.e).c.a,"charset")).d8(0,p.w),null),"resp"),t.N)
@@ -7808,7 +7808,7 @@ o=J
 n=B.a6
 m=B.G
 s=3
-return A.P(A.x7(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order_log/status/"+b)),$async$avt)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/order_log/status/"+b)),$async$avt)
 case 3:q=p.bW(o.b3(n.i0(0,m.d8(0,d.w),null),"status"),t.N)
 s=1
 break
@@ -40705,7 +40705,7 @@ return b instanceof A.B6&&b.fr===this.fr},
 gv(a){return A.aFY(A.asc(A.asc(0,A.dR(A.p(this))),B.h.gv(this.fr)))}}
 A.aee.prototype={
 $1(a){t.A4.a(a)
-return A.aI1(A.cr("https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev/order_log/to_calling/"+this.a))},
+return A.aI1(A.cr("https://cocktail-order-server-2024.fly.dev/order_log/to_calling/"+this.a))},
 $S:220}
 A.B7.prototype={}
 A.Vn.prototype={}
