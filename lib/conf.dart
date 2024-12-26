@@ -1,1 +1,1 @@
-const apiBaseUrl = 'https://fvbyma5370.execute-api.us-west-2.amazonaws.com/dev';
+const apiBaseUrl = 'https://cocktail-order-server-2024.fly.dev';
