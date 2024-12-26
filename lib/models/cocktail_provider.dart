@@ -24,7 +24,7 @@ Future<List<SelfMenu>> getSelfMenu(GetSelfMenuRef ref) async {
 
 @Riverpod(keepAlive: true)
 Future<List<OrderMenu>> getOrderMenu(GetOrderMenuRef ref) async {
-  var res = await http.get(Uri.parse("$apiBaseUrl/menu"));
+  var res = await http.get(Uri.parse("$apiBaseUrl/order_menuu"));
   var decodedRes = jsonDecode(utf8.decode(res.bodyBytes));
   var orderMenuList =
       List.from(decodedRes).map((e) => OrderMenu.fromJson(e)).toList();
