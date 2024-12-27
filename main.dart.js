@@ -7477,7 +7477,7 @@ while(true)switch(s){case 0:m=A
 l=B.a6
 k=B.G
 s=3
-return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/order_menuu")),$async$avo)
+return A.P(A.x7(A.cr("https://cocktail-order-server-2024.fly.dev/order_menu")),$async$avo)
 case 3:p=m.f9(l.i0(0,k.d8(0,c.w),null),!0,t.z)
 o=A.T(p).h("a1<1,aV>")
 n=A.a_(new A.a1(p,new A.avp(),o),!0,o.h("am.E"))
