@@ -705,13 +705,16 @@ class _Sidebar extends HookConsumerWidget {
                   ),
                   child: child,
                 ),
-                child: SidebarButton(
-                  "裏メニュー",
-                  SidebarType.secret,
-                  onTap: () {
-                    ref.read(sidebarProvider.notifier).state =
-                        SidebarType.secret;
-                  },
+                child: IgnorePointer(
+                  ignoring: !isValidSecret,
+                  child: SidebarButton(
+                    "裏メニュー",
+                    SidebarType.secret,
+                    onTap: () {
+                      ref.read(sidebarProvider.notifier).state =
+                          SidebarType.secret;
+                    },
+                  ),
                 ),
               ),
             )
